@@ -1,0 +1,40 @@
+{
+  "name": "ai-powered-finance-agent",
+  "version": "0.1.0",
+  "description": "Intent-routing finance agent with a Turkish and US market data layer. Most sources need no API key.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "demo": "node examples/smoke.mjs"
+  },
+  "keywords": [
+    "finance",
+    "market-data",
+    "bist",
+    "borsa-istanbul",
+    "tcmb",
+    "turkish-lira",
+    "sec-edgar",
+    "finra",
+    "cboe",
+    "yahoo-finance",
+    "agent",
+    "intent-routing",
+    "typescript"
+  ],
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  }
+}
