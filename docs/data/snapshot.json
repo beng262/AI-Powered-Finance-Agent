@@ -1,0 +1,204 @@
+{
+  "generatedAt": "2026-09-22T06:56:48.009Z",
+  "doviz": {
+    "ok": true,
+    "data": {
+      "rows": [
+        {
+          "key": "gram-altin",
+          "label": "Gram Altin (TL)",
+          "value": 6776.15
+        },
+        {
+          "key": "gumus",
+          "label": "Gumus (TL)",
+          "value": 102.37
+        },
+        {
+          "key": "USD",
+          "label": "USD/TRY",
+          "value": 48.8201
+        },
+        {
+          "key": "EUR",
+          "label": "EUR/TRY",
+          "value": 55.9999
+        },
+        {
+          "key": "XU100",
+          "label": "BIST 100",
+          "value": 13337.69
+        },
+        {
+          "key": "BRENT",
+          "label": "Brent",
+          "value": null
+        }
+      ],
+      "live": true
+    }
+  },
+  "tcmb": {
+    "ok": true,
+    "data": {
+      "asOf": "21.09.2026",
+      "fx": [
+        {
+          "code": "USD",
+          "name": "ABD DOLARI",
+          "buying": 48.7131,
+          "selling": 48.8009
+        },
+        {
+          "code": "EUR",
+          "name": "EURO",
+          "buying": 55.9243,
+          "selling": 56.025
+        },
+        {
+          "code": "GBP",
+          "name": "İNGİLİZ STERLİNİ",
+          "buying": 65.0834,
+          "selling": 65.4228
+        },
+        {
+          "code": "CHF",
+          "name": "İSVİÇRE FRANGI",
+          "buying": 59.0761,
+          "selling": 59.4554
+        },
+        {
+          "code": "JPY",
+          "name": "JAPON YENİ",
+          "buying": 30.9093,
+          "selling": 31.114
+        }
+      ],
+      "evds": [
+        {
+          "id": "TP.APIFON4",
+          "label": "Agirlikli Ort. Fonlama Maliyeti",
+          "value": null
+        },
+        {
+          "id": "TP.AB.A01",
+          "label": "Brut Doviz Rezervleri (mn USD)",
+          "value": null
+        },
+        {
+          "id": "TP.FG.J0",
+          "label": "TUFE Endeksi (TUIK/EVDS)",
+          "value": null
+        }
+      ],
+      "configured": {
+        "evds": false
+      },
+      "liveFx": true
+    }
+  },
+  "bist": {
+    "ok": true,
+    "data": {
+      "indices": [
+        {
+          "symbol": "XU100.IS",
+          "label": "BIST 100",
+          "price": 13337.69,
+          "changePct": -0.00007497544554091462,
+          "currency": "TRY"
+        },
+        {
+          "symbol": "XU030.IS",
+          "label": "BIST 30",
+          "price": 16391.39,
+          "changePct": -0.000061007601559470714,
+          "currency": "TRY"
+        },
+        {
+          "symbol": "XBANK.IS",
+          "label": "BIST Banka",
+          "price": 16716.84,
+          "changePct": 0.00023928024501795875,
+          "currency": "TRY"
+        }
+      ],
+      "watchlist": [
+        {
+          "symbol": "THYAO.IS",
+          "label": "THYAO",
+          "price": 293.5,
+          "changePct": 0,
+          "currency": "TRY"
+        },
+        {
+          "symbol": "ASELS.IS",
+          "label": "ASELS",
+          "price": 378,
+          "changePct": 0,
+          "currency": "TRY"
+        },
+        {
+          "symbol": "GARAN.IS",
+          "label": "GARAN",
+          "price": 133.1,
+          "changePct": 0,
+          "currency": "TRY"
+        },
+        {
+          "symbol": "KCHOL.IS",
+          "label": "KCHOL",
+          "price": 222.3,
+          "changePct": 0,
+          "currency": "TRY"
+        },
+        {
+          "symbol": "EREGL.IS",
+          "label": "EREGL",
+          "price": 37.38,
+          "changePct": 0,
+          "currency": "TRY"
+        },
+        {
+          "symbol": "SISE.IS",
+          "label": "SISE",
+          "price": 40.36,
+          "changePct": 0,
+          "currency": "TRY"
+        }
+      ],
+      "live": true
+    }
+  },
+  "vix": {
+    "ok": true,
+    "data": {
+      "vix": 14.87,
+      "vix9d": 13.14,
+      "vix3m": 18.08,
+      "termRatio": 0.8224557522123894,
+      "structure": "contango",
+      "percentile1y": 7.5396825396825395,
+      "label": "normal",
+      "note": "Vade yapısı normal (contango): yakın vade uzun vadeden ucuz. Piyasanın sakin kabul ettiği durum.",
+      "asOf": "2026-09-21"
+    }
+  },
+  "aapl": {
+    "ok": true,
+    "data": {
+      "ticker": "AAPL",
+      "cik": "0000320193",
+      "revenue": 416161000000,
+      "netIncome": 112010000000,
+      "assets": 359241000000,
+      "liabilities": 285508000000,
+      "equity": 73733000000,
+      "netMargin": 26.91506412181824,
+      "debtToEquity": 3.872187487285205,
+      "roe": 151.91298333175104,
+      "asOf": "2025-09-27",
+      "fiscalPeriod": "FY2025"
+    }
+  }
+}
