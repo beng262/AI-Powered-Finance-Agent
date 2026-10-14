@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T14:12:48.882Z",
+  "generatedAt": "2026-10-14T11:53:41.550Z",
   "doviz": {
     "ok": true,
     "data": {
@@ -7,27 +7,27 @@
         {
           "key": "gram-altin",
           "label": "Gram Altin (TL)",
-          "value": 6618.92
+          "value": 6574.54
         },
         {
           "key": "gumus",
           "label": "Gumus (TL)",
-          "value": 94.91
+          "value": 93.02
         },
         {
           "key": "USD",
           "label": "USD/TRY",
-          "value": 49.3671
+          "value": 49.3927
         },
         {
           "key": "EUR",
           "label": "EUR/TRY",
-          "value": 55.3187
+          "value": 55.3498
         },
         {
           "key": "XU100",
           "label": "BIST 100",
-          "value": 12239.55
+          "value": 12215.07
         },
         {
           "key": "BRENT",
@@ -104,22 +104,22 @@
         {
           "symbol": "XU100.IS",
           "label": "BIST 100",
-          "price": 12235.63,
-          "changePct": 0.6989720756828799,
+          "price": 12217.67,
+          "changePct": -0.26961724636144213,
           "currency": "TRY"
         },
         {
           "symbol": "XU030.IS",
           "label": "BIST 30",
-          "price": 15167.74,
-          "changePct": 1.1095038430002813,
+          "price": 15181.49,
+          "changePct": -0.06654993549066734,
           "currency": "TRY"
         },
         {
           "symbol": "XBANK.IS",
           "label": "BIST Banka",
-          "price": 16166.74,
-          "changePct": 1.292824741234555,
+          "price": 16067.17,
+          "changePct": -0.5467487852434116,
           "currency": "TRY"
         }
       ],
@@ -127,43 +127,43 @@
         {
           "symbol": "THYAO.IS",
           "label": "THYAO",
-          "price": 286,
-          "changePct": 0.08748906386701893,
+          "price": 283,
+          "changePct": -1.1353711790393017,
           "currency": "TRY"
         },
         {
           "symbol": "ASELS.IS",
           "label": "ASELS",
-          "price": 347.5,
-          "changePct": 1.6825164594001407,
+          "price": 348.75,
+          "changePct": -0.5702066999287214,
           "currency": "TRY"
         },
         {
           "symbol": "GARAN.IS",
           "label": "GARAN",
-          "price": 131.5,
-          "changePct": 1.3097072419106182,
+          "price": 131,
+          "changePct": -0.22848438690024064,
           "currency": "TRY"
         },
         {
           "symbol": "KCHOL.IS",
           "label": "KCHOL",
-          "price": 212.5,
-          "changePct": 2.706621556307387,
+          "price": 212.7,
+          "changePct": 0.0941176470588223,
           "currency": "TRY"
         },
         {
           "symbol": "EREGL.IS",
           "label": "EREGL",
-          "price": 37.08,
-          "changePct": -1.38297872340426,
+          "price": 37.58,
+          "changePct": 0.8588298443370945,
           "currency": "TRY"
         },
         {
           "symbol": "SISE.IS",
           "label": "SISE",
-          "price": 37.82,
-          "changePct": 0.5851063829787284,
+          "price": 37.92,
+          "changePct": 0.10559662090812161,
           "currency": "TRY"
         }
       ],
@@ -173,15 +173,15 @@
   "vix": {
     "ok": true,
     "data": {
-      "vix": 15.21,
-      "vix9d": 11.68,
-      "vix3m": 17.93,
-      "termRatio": 0.8482989403234803,
+      "vix": 15.27,
+      "vix9d": 11.99,
+      "vix3m": 17.96,
+      "termRatio": 0.8502227171492204,
       "structure": "contango",
-      "percentile1y": 15.476190476190476,
+      "percentile1y": 15.873015873015872,
       "label": "normal",
       "note": "Vade yapısı normal (contango): yakın vade uzun vadeden ucuz. Piyasanın sakin kabul ettiği durum.",
-      "asOf": "2026-10-12"
+      "asOf": "2026-10-13"
     }
   },
   "aapl": {
