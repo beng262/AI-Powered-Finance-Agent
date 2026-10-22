@@ -120,6 +120,8 @@ const $ = (id) => document.getElementById(id);
 const num = (v, d = 2) =>
   v === null || v === undefined || Number.isNaN(v) ? "–"
   : Number(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+const escapeHtml = (v) => String(v).replace(/[&<>"']/g, (c) =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 // ---------- live client-side demos ----------
 function runInjection() {
@@ -169,7 +171,7 @@ try {
   if (snap.aapl?.ok) cards.push(["AAPL revenue", "$" + (snap.aapl.data.revenue / 1e9).toFixed(1) + "B", "SEC EDGAR"]);
 
   $("cards").innerHTML = cards.map(([k, v, m]) =>
-    `<div class="card"><div class="k">${k}</div><div class="v">${v}</div><div class="m">${m}</div></div>`).join("");
+    `<div class="card"><div class="k">${escapeHtml(k)}</div><div class="v">${escapeHtml(v)}</div><div class="m">${escapeHtml(m)}</div></div>`).join("");
 
   const rows = [...(snap.bist?.data?.indices ?? []), ...(snap.bist?.data?.watchlist ?? [])];
   $("bist").innerHTML = rows.length
@@ -177,7 +179,7 @@ try {
       rows.map((q) => {
         const ch = q.changePct ?? null;
         const cls = ch > 0 ? "up" : ch < 0 ? "down" : "";
-        return `<tr><td>${(q.symbol ?? "–").replace(/\.IS$/, "")}</td><td>${q.label ?? ""}</td>` +
+        return `<tr><td>${escapeHtml((q.symbol ?? "–").replace(/\.IS$/, ""))}</td><td>${escapeHtml(q.label ?? "")}</td>` +
                `<td class="num">${num(q.price)}</td>` +
                `<td class="num ${cls}">${ch === null ? "–" : (ch > 0 ? "+" : "") + num(ch)}%</td></tr>`;
       }).join("") + `</tbody>`
@@ -187,7 +189,7 @@ try {
   $("fx").innerHTML = fx.length
     ? `<thead><tr><th>Code</th><th>Name</th><th style="text-align:right">Buying</th><th style="text-align:right">Selling</th></tr></thead><tbody>` +
       fx.slice(0, 10).map((r) =>
-        `<tr><td>${r.code}</td><td>${r.name ?? ""}</td><td class="num">${num(r.buying, 4)}</td><td class="num">${num(r.selling, 4)}</td></tr>`
+        `<tr><td>${escapeHtml(r.code)}</td><td>${escapeHtml(r.name ?? "")}</td><td class="num">${num(r.buying, 4)}</td><td class="num">${num(r.selling, 4)}</td></tr>`
       ).join("") + `</tbody>`
     : `<tbody><tr><td>No rows in this snapshot.</td></tr></tbody>`;
 } catch (e) {
