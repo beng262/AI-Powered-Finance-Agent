@@ -71,7 +71,7 @@ export function historicalVaR(s: Series, conf = 0.95): number | null {
   const r = dailyReturns(s).slice().sort((a, b) => a - b);
   if (r.length < 20) return null;
   const idx = Math.max(0, Math.floor((1 - conf) * r.length) - 1);
-  return Math.abs(r[idx]) * 100;
+  return Math.max(0, -r[idx]) * 100;
 }
 
 // Maximum drawdown over the series, as a positive %.
