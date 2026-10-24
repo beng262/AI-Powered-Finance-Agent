@@ -6,13 +6,13 @@
 export type Series = number[]; // closes, oldest -> newest
 
 export function sma(s: Series, n: number): number | null {
-  if (s.length < n || n <= 0) return null;
+  if (!Number.isSafeInteger(n) || n <= 0 || s.length < n) return null;
   const slice = s.slice(-n);
   return slice.reduce((a, b) => a + b, 0) / n;
 }
 
 export function ema(s: Series, n: number): number | null {
-  if (s.length < n || n <= 0) return null;
+  if (!Number.isSafeInteger(n) || n <= 0 || s.length < n) return null;
   const k = 2 / (n + 1);
   let e = s.slice(0, n).reduce((a, b) => a + b, 0) / n; // seed with SMA
   for (let i = n; i < s.length; i++) e = s[i] * k + e * (1 - k);
@@ -21,7 +21,7 @@ export function ema(s: Series, n: number): number | null {
 
 // Wilder's RSI over `n` periods (default 14). Returns 0..100 or null if too short.
 export function rsi(s: Series, n = 14): number | null {
-  if (s.length < n + 1) return null;
+  if (!Number.isSafeInteger(n) || n <= 0 || s.length < n + 1) return null;
   let gain = 0, loss = 0;
   for (let i = 1; i <= n; i++) {
     const ch = s[i] - s[i - 1];
@@ -112,7 +112,7 @@ export function macd(s: Series): { macd: number; signal: number; histogram: numb
 
 // Bollinger Bands (20, 2σ) + %B position (0 = alt bant, 1 = üst bant).
 export function bollinger(s: Series, n = 20, mult = 2): { upper: number; middle: number; lower: number; percentB: number } | null {
-  if (s.length < n) return null;
+  if (!Number.isSafeInteger(n) || n <= 0 || s.length < n) return null;
   const win = s.slice(-n);
   const mid = win.reduce((a, b) => a + b, 0) / n;
   const sd = Math.sqrt(win.reduce((a, b) => a + (b - mid) ** 2, 0) / n);
