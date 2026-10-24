@@ -169,7 +169,7 @@ export type Forecast = {
 };
 export function linearForecast(s: Series, horizon: number): Forecast | null {
   const n = s.length;
-  if (n < 10 || horizon < 1) return null;
+  if (n < 10 || !Number.isSafeInteger(horizon) || horizon < 1) return null;
   // least-squares fit y = a*x + b over x = 0..n-1
   let sx = 0, sy = 0, sxx = 0, sxy = 0;
   for (let i = 0; i < n; i++) { sx += i; sy += s[i]; sxx += i * i; sxy += i * s[i]; }
