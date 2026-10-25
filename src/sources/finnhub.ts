@@ -34,17 +34,18 @@ export async function finnhubTestKey(key: string): Promise<{ ok: boolean; error?
 export type FinnhubQuote = { ticker: string; price: number; prevClose: number; source: "finnhub" };
 
 export async function finnhubQuote(ticker: string): Promise<FinnhubQuote | null> {
+  const symbol = ticker.trim().toUpperCase();
   const key = await getFinnhubKey();
   if (!key) return null;
   try {
-    const r = await fetch(`${BASE}/quote?symbol=${encodeURIComponent(ticker)}&token=${encodeURIComponent(key)}`, {
+    const r = await fetch(`${BASE}/quote?symbol=${encodeURIComponent(symbol)}&token=${encodeURIComponent(key)}`, {
       cache: "no-store",
       signal: AbortSignal.timeout(10000),
     });
     if (!r.ok) return null;
     const j = (await r.json()) as { c?: number; pc?: number };
     if (typeof j.c !== "number" || !Number.isFinite(j.c) || j.c <= 0) return null;
-    return { ticker: ticker.toUpperCase(), price: j.c, prevClose: typeof j.pc === "number" ? j.pc : j.c, source: "finnhub" };
+    return { ticker: symbol, price: j.c, prevClose: typeof j.pc === "number" ? j.pc : j.c, source: "finnhub" };
   } catch {
     return null;
   }
