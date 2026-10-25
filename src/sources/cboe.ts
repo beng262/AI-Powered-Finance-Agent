@@ -113,7 +113,9 @@ export async function vixRegime(): Promise<VixRegime> {
         ? "Yakın vadeli oynaklık uzun vadeliyi aşmış (backwardation). Piyasa sorunu yakın görüyor - tarihsel olarak düşüşlerin yaşandığı rejim."
         : structure === "düz"
           ? "Vade yapısı düzleşmiş. Sakin rejimden gergine geçiş bölgesi; tek başına sinyal değil, dikkat işareti."
-          : "Vade yapısı normal (contango): yakın vade uzun vadeden ucuz. Piyasanın sakin kabul ettiği durum.";
+          : structure === null
+            ? "Vade yapısı veri eksikliği nedeniyle değerlendirilemiyor."
+            : "Vade yapısı normal (contango): yakın vade uzun vadeden ucuz. Piyasanın sakin kabul ettiği durum.";
   }
 
   return {
