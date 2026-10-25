@@ -39,7 +39,7 @@ async function eiaLatest(path: string, productFacet: string, label: string, id: 
     const r = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(12000) });
     if (!r.ok) return { id, label, value: null, asOf: null };
     const j = (await r.json()) as {
-      response?: { data?: { period?: string; value?: number | string; "units-description"?: string }[] };
+      response?: { data?: { period?: string; value?: number | string; units?: string }[] };
     };
     const row = j.response?.data?.[0];
     const value = row?.value == null ? null : typeof row.value === "number" ? row.value : parseFloat(String(row.value));
@@ -48,7 +48,7 @@ async function eiaLatest(path: string, productFacet: string, label: string, id: 
       label,
       value: Number.isFinite(value as number) ? (value as number) : null,
       asOf: row?.period || null,
-      unit: row?.["units-description"],
+      unit: row?.units,
     };
   } catch {
     return { id, label, value: null, asOf: null };
