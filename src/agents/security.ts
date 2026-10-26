@@ -40,7 +40,10 @@ export const OUT_OF_SCOPE_MSG: Record<"tr" | "en", string> = {
 // Mask long numeric identifiers (IBAN/account-like) for non-privileged roles.
 export function maskFor(role: Role, text: string): string {
   if (role === "admin" || role === "cfo" || role === "guvenlik") return text;
-  return text.replace(/\b(\d{4})\d{4,}(\d{2})\b/g, "$1****$2");
+  return text.replace(/\b(?:[A-Z]{2}\d{2}(?:[ \t]*[A-Z0-9]){11,30}|\d(?:[ \t]*\d){9,})\b/g, (match) => {
+    const compact = match.replace(/[ \t]/g, "");
+    return `${compact.slice(0, 4)}****${compact.slice(-2)}`;
+  });
 }
 
 export type AuditEntry = { ts: string; role: Role; query: string; intent: string; allowed: boolean; source: string };
