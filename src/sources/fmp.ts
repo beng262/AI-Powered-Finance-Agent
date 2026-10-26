@@ -27,7 +27,8 @@ export async function getFmpKeys(): Promise<string[]> {
   const keys: string[] = [];
   try {
     const row = await db.setting.findUnique({ where: { key: "fmpApiKey" } });
-    if (row?.value) keys.push(row.value.trim());
+    const key = row?.value?.trim();
+    if (key) keys.push(key);
   } catch { /* ignore */ }
   const env = (process.env.FMP_API_KEY || "").trim();
   if (env && !keys.includes(env)) keys.push(env);
