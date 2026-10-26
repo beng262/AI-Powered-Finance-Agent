@@ -55,7 +55,22 @@ async function cacheSet<T>(k: string, data: T): Promise<void> {
   try { await db.setting.upsert({ where: { key: `fmpc:${k}` }, create: { key: `fmpc:${k}`, value: JSON.stringify({ at: Date.now(), data }) }, update: { value: JSON.stringify({ at: Date.now(), data }) } }); } catch { /* ignore */ }
 }
 
+const fmpInFlight = new Map<string, Promise<unknown>>();
+
 async function fmpGet<T>(endpoint: string, cacheKey: string, ttlMs: number): Promise<T | null> {
+  const pending = fmpInFlight.get(cacheKey);
+  if (pending) return pending as Promise<T | null>;
+
+  const request = fmpGetOnce<T>(endpoint, cacheKey, ttlMs);
+  fmpInFlight.set(cacheKey, request);
+  try {
+    return await request;
+  } finally {
+    fmpInFlight.delete(cacheKey);
+  }
+}
+
+async function fmpGetOnce<T>(endpoint: string, cacheKey: string, ttlMs: number): Promise<T | null> {
   const cached = await cacheGet<T>(cacheKey, ttlMs);
   if (cached !== null) return cached;
   const keys = await getFmpKeys();
