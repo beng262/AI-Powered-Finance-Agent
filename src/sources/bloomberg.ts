@@ -74,15 +74,20 @@ export async function mapTickersToBloomberg(tickers: string[]): Promise<Bloomber
   }));
 
   try {
-    const r = await fetch("https://api.openfigi.com/v3/mapping", {
-      method: "POST",
-      headers,
-      body: JSON.stringify(body),
-      cache: "no-store",
-      signal: AbortSignal.timeout(12000),
-    });
-    if (!r.ok) return [];
-    const rows = (await r.json()) as { data?: FigiHit[]; error?: string }[];
+    const rows: { data?: FigiHit[]; error?: string }[] = [];
+    const batchSize = key ? 25 : 10;
+    for (let i = 0; i < body.length; i += batchSize) {
+      const r = await fetch("https://api.openfigi.com/v3/mapping", {
+        method: "POST",
+        headers,
+        body: JSON.stringify(body.slice(i, i + batchSize)),
+        cache: "no-store",
+        signal: AbortSignal.timeout(12000),
+      });
+      if (!r.ok) return [];
+      const batch = (await r.json()) as { data?: FigiHit[]; error?: string }[];
+      rows.push(...batch);
+    }
     return unique.map((ticker, i) => {
       const hit = rows[i]?.data?.[0];
       const bbTicker = hit?.ticker && hit?.exchCode ? `${hit.ticker} ${hit.exchCode} Equity` : hit?.ticker ?? null;
