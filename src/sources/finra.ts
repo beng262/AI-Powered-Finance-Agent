@@ -29,6 +29,7 @@ const dashed = (yyyymmdd: string) => `${yyyymmdd.slice(0, 4)}-${yyyymmdd.slice(4
 
 let mem: { date: string; map: Map<string, { short: number; total: number }>; at: number } | null = null;
 let pending: Promise<void> | null = null;
+let lastRefreshAttempt = 0;
 
 /** Download the most recent published file, walking back over weekends/holidays.
  *  Today's file does not exist until after the close, so a few misses are normal. */
@@ -63,8 +64,10 @@ export async function shortVolumes(tickers: string[]): Promise<{ date: string | 
   const want = [...new Set(tickers.map((t) => t.toUpperCase()))].filter((t) => !t.endsWith(".IS"));
   if (!want.length) return { date: null, rows: [] };
 
-  if (!mem || Date.now() - mem.at > 6 * 3_600_000) {
+  if ((!mem || Date.now() - mem.at > 6 * 3_600_000) &&
+      (pending || Date.now() - lastRefreshAttempt >= 5 * 60_000)) {
     if (!pending) {
+      lastRefreshAttempt = Date.now();
       pending = fetchLatestFile().then((f) => {
         if (f) mem = { ...f, at: Date.now() };
       }).finally(() => {
