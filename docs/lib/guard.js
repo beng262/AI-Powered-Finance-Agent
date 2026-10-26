@@ -31,7 +31,7 @@ export function detectInjection(q) {
 const SECRET_PATTERNS = [
     /sqlserver:\/\/[^\s"']+/gi, // DB connection strings
     /password\s*=\s*[^;\s"']+/gi, // password=...
-    /\bsk-[A-Za-z0-9]{16,}\b/g, // OpenAI-style keys
+    /\bsk-[A-Za-z0-9_-]{16,}(?![A-Za-z0-9_-])/g, // OpenAI-style keys
     /\b[A-Fa-f0-9]{32,}\b/g, // long hex secrets / API keys
     /AZURE_OPENAI_API_KEY\s*[:=]\s*\S+/gi,
 ];
