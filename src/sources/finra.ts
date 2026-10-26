@@ -33,10 +33,12 @@ let pending: Promise<void> | null = null;
 /** Download the most recent published file, walking back over weekends/holidays.
  *  Today's file does not exist until after the close, so a few misses are normal. */
 async function fetchLatestFile(maxBack = 6): Promise<{ date: string; map: Map<string, { short: number; total: number }> } | null> {
+  const signal = AbortSignal.timeout(25000);
   for (let i = 0; i <= maxBack; i++) {
+    if (signal.aborted) return null;
     const day = compact(new Date(Date.now() - i * 86_400_000));
     try {
-      const r = await fetch(`${BASE}/CNMSshvol${day}.txt`, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(25000) });
+      const r = await fetch(`${BASE}/CNMSshvol${day}.txt`, { headers: { "User-Agent": UA }, signal });
       if (!r.ok) continue;
       const text = await r.text();
       const map = new Map<string, { short: number; total: number }>();
