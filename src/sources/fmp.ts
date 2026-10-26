@@ -61,19 +61,20 @@ async function fmpGet<T>(endpoint: string, cacheKey: string, ttlMs: number): Pro
   const keys = await getFmpKeys();
   if (!keys.length) return null;
 
-  let sawQuotaError = false;
+  let quotaErrors = 0;
   for (const key of keys) {
     try {
       const sep = endpoint.includes("?") ? "&" : "?";
       const r = await fetch(`${BASE}/${endpoint}${sep}apikey=${key}`, { cache: "no-store", signal: AbortSignal.timeout(12000) });
-      // 429 = daily cap, 401/403 = bad key: both are worth retrying with the next key
-      // rather than reporting the symbol as having no data.
-      if (r.status === 429 || r.status === 401 || r.status === 403) { sawQuotaError = true; continue; }
+      // Retry quota and key/access errors with the next key, but only 429 counts
+      // as quota exhaustion.
+      if (r.status === 429) { quotaErrors++; continue; }
+      if (r.status === 401 || r.status === 403) continue;
       if (!r.ok) continue;
       const j = await r.json();
       if (j && typeof j === "object" && !Array.isArray(j) && "Error Message" in j) {
         // FMP also reports quota exhaustion as a 200 with an error body.
-        if (/limit reach/i.test(String((j as { "Error Message": string })["Error Message"]))) { sawQuotaError = true; continue; }
+        if (/limit reach/i.test(String((j as { "Error Message": string })["Error Message"]))) { quotaErrors++; continue; }
         continue;
       }
       await cacheSet(cacheKey, j);
@@ -81,7 +82,7 @@ async function fmpGet<T>(endpoint: string, cacheKey: string, ttlMs: number): Pro
       return j as T;
     } catch { /* try the next key */ }
   }
-  if (sawQuotaError) quotaExhausted = true;
+  quotaExhausted = quotaErrors === keys.length;
   return null;
 }
 
