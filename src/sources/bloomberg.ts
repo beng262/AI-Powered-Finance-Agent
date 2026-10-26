@@ -59,18 +59,20 @@ export async function bloombergTestKey(key: string): Promise<{ ok: boolean; erro
 
 /** Map one or more equity tickers to Bloomberg/OpenFIGI identifiers. */
 export async function mapTickersToBloomberg(tickers: string[]): Promise<BloombergMap[]> {
-  const unique = [...new Set(tickers.map((t) => t.toUpperCase().replace(/\.IS$/i, "")).filter(Boolean))].slice(0, 25);
+  const unique = [...new Set(tickers.map((t) => t.toUpperCase()).filter(Boolean))].slice(0, 25).map((t) => ({
+    ticker: t.replace(/\.IS$/i, ""),
+    exchCode: t.endsWith(".IS") ? "TI" : undefined,
+  })).filter((t) => t.ticker);
   if (!unique.length) return [];
 
   const key = await getBloombergKey();
   const headers: HeadersInit = { "Content-Type": "application/json" };
   if (key) headers["X-OPENFIGI-APIKEY"] = key;
 
-  const body = unique.map((t) => ({
+  const body = unique.map(({ ticker, exchCode }) => ({
     idType: "TICKER" as const,
-    idValue: t,
-    // Prefer US listing; OpenFIGI still returns best match when exchCode is omitted for non-US.
-    ...(t.length <= 5 ? { exchCode: "US" } : {}),
+    idValue: ticker,
+    ...(exchCode ? { exchCode } : {}),
   }));
 
   try {
@@ -83,7 +85,7 @@ export async function mapTickersToBloomberg(tickers: string[]): Promise<Bloomber
     });
     if (!r.ok) return [];
     const rows = (await r.json()) as { data?: FigiHit[]; error?: string }[];
-    return unique.map((ticker, i) => {
+    return unique.map(({ ticker }, i) => {
       const hit = rows[i]?.data?.[0];
       const bbTicker = hit?.ticker && hit?.exchCode ? `${hit.ticker} ${hit.exchCode} Equity` : hit?.ticker ?? null;
       return {
