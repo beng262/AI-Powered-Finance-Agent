@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T11:40:17.772Z",
+  "generatedAt": "2026-10-26T13:04:17.494Z",
   "doviz": {
     "ok": true,
     "data": {
@@ -7,27 +7,27 @@
         {
           "key": "gram-altin",
           "label": "Gram Altin (TL)",
-          "value": 6434.61
+          "value": 6428.04
         },
         {
           "key": "gumus",
           "label": "Gumus (TL)",
-          "value": 86.24
+          "value": 86.34
         },
         {
           "key": "USD",
           "label": "USD/TRY",
-          "value": 49.7376
+          "value": 49.7624
         },
         {
           "key": "EUR",
           "label": "EUR/TRY",
-          "value": 55.7134
+          "value": 55.7321
         },
         {
           "key": "XU100",
           "label": "BIST 100",
-          "value": 10902.34
+          "value": 11055.08
         },
         {
           "key": "BRENT",
@@ -41,37 +41,37 @@
   "tcmb": {
     "ok": true,
     "data": {
-      "asOf": "22.10.2026",
+      "asOf": "26.10.2026",
       "fx": [
         {
           "code": "USD",
           "name": "ABD DOLARI",
-          "buying": 49.5389,
-          "selling": 49.6281
+          "buying": 49.6732,
+          "selling": 49.7627
         },
         {
           "code": "EUR",
           "name": "EURO",
-          "buying": 55.6041,
-          "selling": 55.7043
+          "buying": 55.6539,
+          "selling": 55.7542
         },
         {
           "code": "GBP",
           "name": "İNGİLİZ STERLİNİ",
-          "buying": 66.2399,
-          "selling": 66.5852
+          "buying": 66.2204,
+          "selling": 66.5656
         },
         {
           "code": "CHF",
           "name": "İSVİÇRE FRANGI",
-          "buying": 60.2099,
-          "selling": 60.5965
+          "buying": 60.0283,
+          "selling": 60.4137
         },
         {
           "code": "JPY",
           "name": "JAPON YENİ",
-          "buying": 31.4763,
-          "selling": 31.6847
+          "buying": 31.5113,
+          "selling": 31.72
         }
       ],
       "evds": [
@@ -104,22 +104,22 @@
         {
           "symbol": "XU100.IS",
           "label": "BIST 100",
-          "price": 10901.31,
-          "changePct": -2.843838009340127,
+          "price": 11072.02,
+          "changePct": -0.40460555905369455,
           "currency": "TRY"
         },
         {
           "symbol": "XU030.IS",
           "label": "BIST 30",
-          "price": 13617.92,
-          "changePct": -2.8048162502052,
+          "price": 13839.32,
+          "changePct": -0.2514018826310749,
           "currency": "TRY"
         },
         {
           "symbol": "XBANK.IS",
           "label": "BIST Banka",
-          "price": 14926.14,
-          "changePct": -2.7619364043231065,
+          "price": 15188.36,
+          "changePct": 0.5372272823554347,
           "currency": "TRY"
         }
       ],
@@ -127,43 +127,43 @@
         {
           "symbol": "THYAO.IS",
           "label": "THYAO",
-          "price": 253.75,
-          "changePct": -2.0270270270270285,
+          "price": 256.5,
+          "changePct": -0.5813953488372103,
           "currency": "TRY"
         },
         {
           "symbol": "ASELS.IS",
           "label": "ASELS",
-          "price": 326.25,
-          "changePct": -3.5476718403547713,
+          "price": 334,
+          "changePct": -1.1834319526627168,
           "currency": "TRY"
         },
         {
           "symbol": "GARAN.IS",
           "label": "GARAN",
-          "price": 124.8,
-          "changePct": -2.8793774319066157,
+          "price": 126.1,
+          "changePct": -0.3162055335968472,
           "currency": "TRY"
         },
         {
           "symbol": "KCHOL.IS",
           "label": "KCHOL",
-          "price": 193,
-          "changePct": -1.5808261091279974,
+          "price": 199.2,
+          "changePct": 0.8607594936708818,
           "currency": "TRY"
         },
         {
           "symbol": "EREGL.IS",
           "label": "EREGL",
-          "price": 31.64,
-          "changePct": -9.857549857549863,
+          "price": 30.62,
+          "changePct": -3.1012658227848156,
           "currency": "TRY"
         },
         {
           "symbol": "SISE.IS",
           "label": "SISE",
-          "price": 33.3,
-          "changePct": -2.2887323943661997,
+          "price": 34.02,
+          "changePct": 0.4132231404958775,
           "currency": "TRY"
         }
       ],
@@ -173,15 +173,15 @@
   "vix": {
     "ok": true,
     "data": {
-      "vix": 19.03,
-      "vix9d": 18.86,
-      "vix3m": 20.12,
-      "termRatio": 0.9458250497017893,
+      "vix": 19.45,
+      "vix9d": 18.7,
+      "vix3m": 20.48,
+      "termRatio": 0.94970703125,
       "structure": "contango",
-      "percentile1y": 75.79365079365078,
+      "percentile1y": 78.17460317460318,
       "label": "normal",
       "note": "Vade yapısı normal (contango): yakın vade uzun vadeden ucuz. Piyasanın sakin kabul ettiği durum.",
-      "asOf": "2026-10-22"
+      "asOf": "2026-10-23"
     }
   },
   "aapl": {
