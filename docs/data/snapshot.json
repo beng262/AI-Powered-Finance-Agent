@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T12:55:40.304Z",
+  "generatedAt": "2026-10-29T13:02:12.711Z",
   "doviz": {
     "ok": true,
     "data": {
@@ -7,22 +7,22 @@
         {
           "key": "gram-altin",
           "label": "Gram Altin (TL)",
-          "value": 6494.22
+          "value": 6446.07
         },
         {
           "key": "gumus",
           "label": "Gumus (TL)",
-          "value": 86.84
+          "value": 83.88
         },
         {
           "key": "USD",
           "label": "USD/TRY",
-          "value": 49.8377
+          "value": 49.8376
         },
         {
           "key": "EUR",
           "label": "EUR/TRY",
-          "value": 55.4733
+          "value": 55.5687
         },
         {
           "key": "XU100",
@@ -173,15 +173,15 @@
   "vix": {
     "ok": true,
     "data": {
-      "vix": 17.52,
-      "vix9d": 16.65,
-      "vix3m": 19.57,
-      "termRatio": 0.8952478283086356,
+      "vix": 16.91,
+      "vix9d": 15.6,
+      "vix3m": 19.22,
+      "termRatio": 0.8798126951092613,
       "structure": "contango",
-      "percentile1y": 57.14285714285714,
+      "percentile1y": 47.61904761904761,
       "label": "normal",
       "note": "Vade yapısı normal (contango): yakın vade uzun vadeden ucuz. Piyasanın sakin kabul ettiği durum.",
-      "asOf": "2026-10-27"
+      "asOf": "2026-10-28"
     }
   },
   "aapl": {
