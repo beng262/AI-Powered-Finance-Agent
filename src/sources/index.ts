@@ -42,8 +42,8 @@ export async function getTRSnapshot(opts?: { bistTickers?: string[]; fundCodes?:
   return { asOf: new Date().toISOString(), tcmb, bist, doviz, funds, tuik, liveCodes };
 }
 
-const fmtN = (n: number | null | undefined, d = 2) => (n == null ? "dogrulanamadi" : n.toFixed(d));
-const fmtPct = (n: number | null | undefined) => (n == null ? "dogrulanamadi" : (n >= 0 ? "+" : "") + n.toFixed(2) + "%");
+const fmtN = (n: number | null | undefined, d = 2) => (n == null || !Number.isFinite(n) ? "dogrulanamadi" : n.toFixed(d));
+const fmtPct = (n: number | null | undefined) => (n == null || !Number.isFinite(n) ? "dogrulanamadi" : (n >= 0 ? "+" : "") + n.toFixed(2) + "%");
 
 // Compact prompt block: only real values; missing -> "dogrulanamadi".
 export function trSnapshotToPromptBlock(s: TRSnapshot): string {

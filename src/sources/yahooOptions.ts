@@ -45,6 +45,7 @@ type Raw = {
 // ticker in three panels down to a single network call.
 const TTL_MS = 60_000;
 const cache = new Map<string, { at: number; v: OptionChain | null }>();
+const inFlight = new Map<string, Promise<OptionChain | null>>();
 
 export async function getChain(ticker: string, expiryEpoch?: number): Promise<OptionChain | null> {
   const sym = ticker.trim().toUpperCase();
@@ -52,28 +53,38 @@ export async function getChain(ticker: string, expiryEpoch?: number): Promise<Op
   const key = `${sym}|${expiryEpoch ?? "near"}`;
   const hit = cache.get(key);
   if (hit && Date.now() - hit.at < TTL_MS) return hit.v;
+  const pending = inFlight.get(key);
+  if (pending) return pending;
 
-  const params: Record<string, string | number> = {};
-  if (expiryEpoch) params.date = expiryEpoch;
-  const j = await yahooJson<Raw>(`v7/finance/options/${encodeURIComponent(sym)}`, params);
-  const res = j?.optionChain?.result?.[0];
-  let out: OptionChain | null = null;
-  if (res) {
-    const slice = res.options?.[0];
-    out = {
-      ticker: sym,
-      underlying: res.quote?.regularMarketPrice ?? null,
-      currency: res.quote?.currency || "USD",
-      expirations: res.expirationDates ?? [],
-      expiry: slice?.expirationDate ?? expiryEpoch ?? null,
-      calls: slice?.calls ?? [],
-      puts: slice?.puts ?? [],
-    };
-    // A symbol with no listed options (most BIST names) returns a result with no chain -
-    // that is a real answer, not a failure, so it is cached as an empty chain.
+  const request = (async (): Promise<OptionChain | null> => {
+    const params: Record<string, string | number> = {};
+    if (expiryEpoch) params.date = expiryEpoch;
+    const j = await yahooJson<Raw>(`v7/finance/options/${encodeURIComponent(sym)}`, params);
+    const res = j?.optionChain?.result?.[0];
+    let out: OptionChain | null = null;
+    if (res) {
+      const slice = res.options?.[0];
+      out = {
+        ticker: sym,
+        underlying: res.quote?.regularMarketPrice ?? null,
+        currency: res.quote?.currency || "USD",
+        expirations: res.expirationDates ?? [],
+        expiry: slice?.expirationDate ?? expiryEpoch ?? null,
+        calls: slice?.calls ?? [],
+        puts: slice?.puts ?? [],
+      };
+      // A symbol with no listed options (most BIST names) returns a result with no chain -
+      // that is a real answer, not a failure, so it is cached as an empty chain.
+    }
+    cache.set(key, { at: Date.now(), v: out });
+    return out;
+  })();
+  inFlight.set(key, request);
+  try {
+    return await request;
+  } finally {
+    inFlight.delete(key);
   }
-  cache.set(key, { at: Date.now(), v: out });
-  return out;
 }
 
 /** Every listed expiry for a symbol (epoch seconds), cheapest via the near-dated call. */

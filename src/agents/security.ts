@@ -86,8 +86,11 @@ const INTENT_SCOPE: Record<Intent, string[]> = {
 
 // Decide whether a routed request is permitted for the role (intent-derived scope).
 export function authorize(role: Role, r: RouterOutput, loc: "tr" | "en" = "tr"): { ok: boolean; reason?: string } {
+  if (!Object.prototype.hasOwnProperty.call(INTENT_SCOPE, r.intent)) {
+    return { ok: false, reason: loc === "tr" ? "Geçersiz niyet." : "Invalid intent." };
+  }
   if (r.intent === "OUT_OF_SCOPE") return { ok: false, reason: OUT_OF_SCOPE_MSG[loc] };
-  const needed = INTENT_SCOPE[r.intent] ?? ["finance_read"];
+  const needed = INTENT_SCOPE[r.intent];
   if (!hasScope(role, needed)) {
     const reason = loc === "tr"
       ? `Bu işlem için yetkiniz yok (gerekli kapsam: ${needed.join(", ")}). Rolünüz: ${ROLE_LABEL[role]}.`

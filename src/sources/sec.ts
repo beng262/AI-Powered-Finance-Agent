@@ -163,7 +163,7 @@ type Submissions = {
 export async function insiderTrades(ticker: string, limit = 12): Promise<InsiderTrade[]> {
   const cik = await cikFor(ticker);
   if (!cik) return [];
-  const cacheKey = `sec4v2:${ticker.toUpperCase()}`;   // v2: rows gained `code`
+  const cacheKey = `sec4v2:${ticker.toUpperCase()}:${limit}`;   // v2: rows gained `code`
   try {
     const row = await db.setting.findUnique({ where: { key: cacheKey } });
     if (row?.value) {
