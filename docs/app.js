@@ -31,23 +31,23 @@ const DICT = {
     "user.name": "Demo user",
     "user.role": "Read-only · sample data",
     "ui.dark": "Dark", "ui.light": "Light",
-    "hdr.eyebrow": "REPORT DATE",
+    "hdr.title": "Portfolio",
     "hdr.demo": "Sample portfolio",
     "hdr.reroll": "New sample",
-    "hero.total": "TOTAL PORTFOLIO",
+    "hero.total": "Total portfolio",
     "hero.basisAll": "All",
     "hero.basisNote": "Filter the book by currency leg",
-    "alloc.title": "Sub-portfolio allocation",
+    "alloc.title": "Allocation",
     "alloc.basis": "By strategy",
-    "perf.title": "Portfolio performance",
-    "perf.now": "NOW", "perf.open": "YEAR OPEN",
-    "hold.title": "HOLDINGS",
+    "perf.title": "Performance",
+    "perf.now": "Now", "perf.open": "Year open",
+    "hold.title": "Holdings",
     "tx.title": "Recent transactions", "tx.note": "Sample ledger",
-    "risk.title": "Risk panel", "risk.note": "Computed in your browser by metrics.js",
-    "snap.title": "LIVE MARKET SNAPSHOT",
+    "risk.title": "Risk", "risk.note": "Computed in your browser by metrics.js",
+    "snap.title": "Live market snapshot",
     "snap.note": 'Fetched server-side by a scheduled GitHub Action and committed as JSON. Most of these sources send no <code>Access-Control-Allow-Origin</code> header, so a browser cannot call them directly.',
     "fx.title": "CBRT reference rates",
-    "agent.title": "AGENT CORE, RUNNING IN YOUR BROWSER",
+    "agent.title": "Agent core, running in your browser",
     "agent.note": "The router rules, the guard and the metrics are pure functions with no network and no model, so they run client-side. These are the library's own compiled modules, not a re-implementation.",
     "router.title": "Intent router",
     "router.label": "Ask it something. With no model configured this is the deterministic keyword path – what a fresh clone gets.",
@@ -60,15 +60,15 @@ const DICT = {
     "foot.disclaimer": "Positions, cost bases and cash balances on this page are invented sample data and are not investment advice. The market snapshot, the CBRT rates and the Borsa İstanbul closes are real.",
     "foot.deps": "zero runtime dependencies",
 
-    today: "TODAY", stocks: "positions", cash: "cash", of: "of",
+    today: "Today", stocks: "positions", cash: "cash", of: "of",
     subport: "Sub-portfolio", position: "Position", weight: "Weight",
-    total: "TOTAL", split: "SPLIT",
+    total: "Total", split: "Split",
     date: "Date", action: "Action", desc: "Security", sub: "Sub", qty: "Qty",
     price: "Price", amount: "Amount", realized: "Realised", buy: "BUY", sell: "SELL",
     ticker: "Security", trend: "Trend", lots: "Lots", avgCost: "Avg cost",
     last: "Last", value: "Value", dayPnl: "Day P/L", dayPct: "Day %",
     totalPct: "Total %", totalPnl: "Total P/L",
-    startAnchor: "Series start", yearOpen: "Year open", prevClose: "Prev close",
+    startAnchor: "Series start", yearOpen: "Year open", prevClose: "Previous close",
     fxNote: "converted at the CBRT selling rate",
     live: "live", sample: "sample",
     symbol: "Symbol", name: "Name", change: "Change", buying: "Buying", selling: "Selling",
@@ -92,23 +92,23 @@ const DICT = {
     "user.name": "Demo kullanıcı",
     "user.role": "Salt okunur · örnek veri",
     "ui.dark": "Koyu", "ui.light": "Açık",
-    "hdr.eyebrow": "RAPOR TARİHİ",
+    "hdr.title": "Portföy",
     "hdr.demo": "Örnek portföy",
     "hdr.reroll": "Yeni örnek",
-    "hero.total": "TOPLAM PORTFÖY",
+    "hero.total": "Toplam portföy",
     "hero.basisAll": "Hepsi",
     "hero.basisNote": "Defteri para birimine göre süz",
-    "alloc.title": "Alt portföy dağılımı",
+    "alloc.title": "Dağılım",
     "alloc.basis": "Stratejiye göre",
-    "perf.title": "Portföy performansı",
-    "perf.now": "ŞİMDİ", "perf.open": "YIL AÇILIŞI",
-    "hold.title": "POZİSYONLAR",
+    "perf.title": "Performans",
+    "perf.now": "Şimdi", "perf.open": "Yıl açılışı",
+    "hold.title": "Pozisyonlar",
     "tx.title": "Son işlemler", "tx.note": "Örnek defter",
-    "risk.title": "Risk paneli", "risk.note": "Tarayıcınızda metrics.js ile hesaplanır",
-    "snap.title": "CANLI PİYASA ANLIK GÖRÜNTÜSÜ",
+    "risk.title": "Risk", "risk.note": "Tarayıcınızda metrics.js ile hesaplanır",
+    "snap.title": "Canlı piyasa anlık görüntüsü",
     "snap.note": 'Zamanlanmış bir GitHub Action tarafından sunucu tarafında çekilip JSON olarak işlenir. Bu kaynakların çoğu <code>Access-Control-Allow-Origin</code> başlığı göndermez, bu yüzden tarayıcı onları doğrudan çağıramaz.',
     "fx.title": "TCMB döviz kurları",
-    "agent.title": "AJAN ÇEKİRDEĞİ, TARAYICINIZDA ÇALIŞIYOR",
+    "agent.title": "Ajan çekirdeği, tarayıcınızda çalışıyor",
     "agent.note": "Yönlendirme kuralları, güvenlik filtresi ve metrikler ağ ve model gerektirmeyen saf fonksiyonlardır; bu yüzden istemcide çalışırlar. Bunlar kütüphanenin derlenmiş kendi modülleri, bir kopyası değil.",
     "router.title": "Niyet yönlendirici",
     "router.label": "Bir şey sorun. Model tanımlı değilken deterministik anahtar kelime yolu çalışır – yeni bir kopyanın varsayılanı budur.",
@@ -121,9 +121,9 @@ const DICT = {
     "foot.disclaimer": "Bu sayfadaki pozisyonlar, maliyetler ve nakit bakiyeleri kurgusal örnek verilerdir ve yatırım tavsiyesi değildir. Piyasa anlık görüntüsü, TCMB kurları ve Borsa İstanbul kapanışları gerçektir.",
     "foot.deps": "sıfır çalışma zamanı bağımlılığı",
 
-    today: "BUGÜN", stocks: "pozisyon", cash: "nakit", of: "/",
+    today: "Bugün", stocks: "pozisyon", cash: "nakit", of: "/",
     subport: "Alt portföy", position: "Pozisyon", weight: "Ağırlık",
-    total: "TOPLAM", split: "% DAĞILIM",
+    total: "Toplam", split: "% dağılım",
     date: "Tarih", action: "İşlem", desc: "Kıymet", sub: "Alt", qty: "Adet",
     price: "Fiyat", amount: "Tutar", realized: "Realize", buy: "ALIŞ", sell: "SATIŞ",
     ticker: "Kıymet", trend: "Trend", lots: "Lot", avgCost: "Ort. maliyet",
@@ -200,59 +200,30 @@ function setLang(next) {
 /* ===================== Sidebar nav ===================== */
 
 const NAV = [
-  {
-    id: "view", title: { en: "VIEW", tr: "GÖRÜNÜM" }, items: [
-      { href: "portfolio", icon: "◉", accent: "accent-green", label: { en: "Overview", tr: "Portföy" } },
-      { href: "allocation", icon: "◈", accent: "accent-green", label: { en: "Allocation", tr: "Dağılım" } },
-      { href: "holdings", icon: "⬢", accent: "accent-blue", label: { en: "Holdings", tr: "Pozisyonlar" } },
-      { href: "transactions", icon: "⇄", accent: "accent-blue", label: { en: "Transactions", tr: "İşlemler" } },
-      { href: "risk", icon: "⚠", accent: "accent-red", label: { en: "Risk panel", tr: "Risk paneli" } },
-    ],
-  },
-  {
-    id: "market", title: { en: "MARKET", tr: "PİYASA" }, items: [
-      { href: "snapshot", icon: "◆", accent: "accent-amber", label: { en: "Market snapshot", tr: "Anlık görüntü" } },
-      { href: "bist", icon: "₺", accent: "accent-amber", label: { en: "Borsa İstanbul", tr: "Borsa İstanbul" } },
-      { href: "fx", icon: "⇅", accent: "accent-blue", label: { en: "CBRT rates", tr: "TCMB kurları" } },
-    ],
-  },
-  {
-    id: "agent", title: { en: "AGENT", tr: "AJAN" }, items: [
-      { href: "router", icon: "⌕", accent: "accent-purple", label: { en: "Intent router", tr: "Niyet yönlendirici" } },
-      { href: "guard", icon: "⛨", accent: "accent-purple", label: { en: "Prompt guard", tr: "Prompt güvenliği" } },
-      { href: "metrics", icon: "⬡", accent: "accent-purple", label: { en: "Metrics", tr: "Metrikler" } },
-    ],
-  },
-  {
-    id: "project", title: { en: "PROJECT", tr: "PROJE" }, items: [
-      { href: "sources", icon: "⊙", accent: "accent-green", label: { en: "Data sources", tr: "Veri kaynakları" } },
-    ],
-  },
+  { title: { en: "Portfolio", tr: "Portföy" }, items: [
+    { href: "portfolio", label: { en: "Overview", tr: "Genel bakış" } },
+    { href: "allocation", label: { en: "Allocation", tr: "Dağılım" } },
+    { href: "holdings", label: { en: "Holdings", tr: "Pozisyonlar" } },
+    { href: "transactions", label: { en: "Transactions", tr: "İşlemler" } },
+    { href: "risk", label: { en: "Risk", tr: "Risk" } },
+  ] },
+  { title: { en: "Market", tr: "Piyasa" }, items: [
+    { href: "snapshot", label: { en: "Snapshot", tr: "Anlık görüntü" } },
+    { href: "bist", label: { en: "Borsa İstanbul", tr: "Borsa İstanbul" } },
+    { href: "fx", label: { en: "CBRT rates", tr: "TCMB kurları" } },
+  ] },
+  { title: { en: "Agent", tr: "Ajan" }, items: [
+    { href: "router", label: { en: "Intent router", tr: "Niyet yönlendirici" } },
+    { href: "guard", label: { en: "Prompt guard", tr: "Prompt güvenliği" } },
+    { href: "metrics", label: { en: "Metrics", tr: "Metrikler" } },
+    { href: "sources", label: { en: "Data sources", tr: "Veri kaynakları" } },
+  ] },
 ];
 
-const openGroups = { view: true, market: true, agent: true, project: true };
-
-function renderNav(filter = "") {
-  const q = filter.trim().toLocaleLowerCase(lang === "tr" ? "tr" : "en");
-  const link = (it) => `<a class="nav-link ${it.accent}" data-sec="${it.href}" href="#${it.href}">
-      <span class="ico">${it.icon}</span><span class="lbl">${esc(it.label[lang])}</span></a>`;
-
-  if (q) {
-    const hits = NAV.flatMap((g) => g.items).filter((it) =>
-      it.label[lang].toLocaleLowerCase(lang === "tr" ? "tr" : "en").includes(q));
-    $("nav").innerHTML = hits.length
-      ? `<div style="display:flex;flex-direction:column;gap:3px">${hits.map(link).join("")}</div>`
-      : `<p class="muted xsmall" style="padding:0 8px">${lang === "tr" ? "Sonuç yok." : "No match."}</p>`;
-    return;
-  }
-
-  $("nav").innerHTML = NAV.map((g) => `
-    <div style="margin-bottom:10px">
-      <button class="nav-group" type="button" data-group="${g.id}" aria-expanded="${openGroups[g.id]}">
-        <span class="caret">▶</span>${esc(g.title[lang])}
-      </button>
-      ${openGroups[g.id] ? `<div style="display:flex;flex-direction:column;gap:3px;margin-top:3px">${g.items.map(link).join("")}</div>` : ""}
-    </div>`).join("");
+function renderNav() {
+  $("nav").innerHTML = NAV.map((g) =>
+    `<div class="nav-label">${esc(g.title[lang])}</div>` +
+    g.items.map((it) => `<a data-sec="${it.href}" href="#${it.href}">${esc(it.label[lang])}</a>`).join("")).join("");
   markActive();
 }
 
@@ -263,8 +234,7 @@ function markActive() {
     const node = $(id);
     if (node && node.getBoundingClientRect().top <= 140) current = id;
   }
-  document.querySelectorAll(".nav-link[data-sec]").forEach((a) =>
-    a.classList.toggle("active", a.dataset.sec === current));
+  document.querySelectorAll("nav a[data-sec]").forEach((a) => a.classList.toggle("on", a.dataset.sec === current));
 }
 
 /* ===================== Charts (ported from the app's SVG components) ===================== */
@@ -281,17 +251,17 @@ function donut(segments, centerTop, centerMain, size = 196, thickness = 24) {
     return a;
   }).join("");
   return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="${esc(centerTop)} ${esc(centerMain)}">
-    <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="var(--panel-2)" stroke-width="${thickness}" />
+    <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="var(--surface-2)" stroke-width="${thickness}" />
     <g transform="rotate(-90 ${c} ${c})">${arcs}</g>
-    <text x="${c}" y="${c - 6}" text-anchor="middle" font-size="10" letter-spacing="1.4" fill="var(--muted)">${esc(centerTop)}</text>
+    <text x="${c}" y="${c - 6}" text-anchor="middle" font-size="12" fill="var(--muted)">${esc(centerTop)}</text>
     <text x="${c}" y="${c + 16}" text-anchor="middle" font-size="21" font-weight="700"
-      font-family="var(--font-heading)" fill="var(--foreground)">${esc(centerMain)}</text>
+      font-family="var(--display)" fill="var(--ink)">${esc(centerMain)}</text>
   </svg>`;
 }
 
 function lineChart(points, labels, baseline, width = 560, height = 230) {
   if (points.length < 2) return "";
-  const padL = 56, padR = 12, padT = 14, padB = 26;
+  const padL = 60, padR = 12, padT = 14, padB = 30;
   const iw = width - padL - padR, ih = height - padT - padB;
   const min = Math.min(...points, baseline ?? Infinity);
   const max = Math.max(...points, baseline ?? -Infinity);
@@ -303,25 +273,25 @@ function lineChart(points, labels, baseline, width = 560, height = 230) {
   const fmt = (v) => "$" + (v >= 1e6 ? (v / 1e6).toFixed(2) + "M" : Math.round(v / 1000) + "K");
   const grid = Array.from({ length: 5 }, (_, i) => {
     const v = min + (span * i) / 4, yy = y(v);
-    return `<line x1="${padL}" y1="${yy}" x2="${width - padR}" y2="${yy}" stroke="var(--border)" opacity=".5" />
-      <text x="${padL - 8}" y="${yy + 3}" text-anchor="end" font-size="10" fill="var(--muted)">${fmt(v)}</text>`;
+    return `<line x1="${padL}" y1="${yy}" x2="${width - padR}" y2="${yy}" stroke="var(--line)" opacity=".5" />
+      <text x="${padL - 8}" y="${yy + 3}" text-anchor="end" font-size="12" fill="var(--muted)">${fmt(v)}</text>`;
   }).join("");
   const ticks = (labels || []).map((l, i) => {
     const last = labels.length - 1;
     const anchor = i === 0 ? "start" : i === last ? "end" : "middle";
     return `<text x="${x(Math.round((i / last) * (points.length - 1)))}" y="${height - 8}"
-       text-anchor="${anchor}" font-size="10" fill="var(--muted)">${esc(l)}</text>`;
+       text-anchor="${anchor}" font-size="12" fill="var(--muted)">${esc(l)}</text>`;
   }).join("");
   return `<svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}" role="img" preserveAspectRatio="none">
     <defs><linearGradient id="lcFill" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="var(--green)" stop-opacity=".22" />
-      <stop offset="100%" stop-color="var(--green)" stop-opacity="0" />
+      <stop offset="0%" stop-color="var(--good)" stop-opacity=".22" />
+      <stop offset="100%" stop-color="var(--good)" stop-opacity="0" />
     </linearGradient></defs>
     ${grid}
     ${baseline != null ? `<line x1="${padL}" y1="${y(baseline)}" x2="${width - padR}" y2="${y(baseline)}"
       stroke="var(--muted)" stroke-dasharray="4 4" opacity=".7" />` : ""}
     <path d="${area}" fill="url(#lcFill)" />
-    <path d="${path}" fill="none" stroke="var(--green)" stroke-width="2" stroke-linejoin="round" />
+    <path d="${path}" fill="none" stroke="var(--good)" stroke-width="2" stroke-linejoin="round" />
     ${ticks}
   </svg>`;
 }
@@ -355,9 +325,9 @@ function phaseNow() {
     else if (mins >= 960 && mins < 1200) key = "after";
   }
   const map = {
-    pre: { label: "phasePre", strip: "stripPre", color: "var(--amber)" },
-    open: { label: "phaseOpen", strip: "stripOpen", color: "var(--green)" },
-    after: { label: "phaseAfter", strip: "stripAfter", color: "var(--blue)" },
+    pre: { label: "phasePre", strip: "stripPre", color: "var(--warn)" },
+    open: { label: "phaseOpen", strip: "stripOpen", color: "var(--good)" },
+    after: { label: "phaseAfter", strip: "stripAfter", color: "var(--s1)" },
     closed: { label: "phaseClosed", strip: "stripClosed", color: "var(--muted)" },
   };
   return { key, ...map[key], localTime: now.toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) };
@@ -366,25 +336,20 @@ function phaseNow() {
 function renderPhase() {
   const p = phaseNow();
   $("phase").innerHTML = `<span class="dot ${p.key === "open" ? "live-dot" : ""}" style="background:${p.color}"></span>
-    <span style="color:${p.color}">${esc(t(p.label))}</span>
-    <span class="muted" style="font-weight:400">· ${esc(p.localTime)}</span>`;
+    <span>${esc(t(p.label))}</span><span class="muted" style="font-weight:500">${esc(p.localTime)}</span>`;
 
   const gen = snapshot?.generatedAt ? new Date(snapshot.generatedAt) : null;
   const mins = gen ? Math.max(0, Math.round((Date.now() - gen) / 60000)) : null;
-  const agoTxt = mins == null ? "–"
-    : mins < 60 ? `${mins} ${lang === "tr" ? "dk" : "min"} ${t("ago")}`
-    : `${Math.floor(mins / 60)} ${lang === "tr" ? "sa" : "h"} ${mins % 60} ${lang === "tr" ? "dk" : "min"} ${t("ago")}`;
-
-  $("strip").innerHTML = `
-    <span style="font-weight:700;letter-spacing:.06em;color:${p.color}">
-      <span class="dot ${p.key === "open" ? "live-dot" : ""}" style="background:${p.color};margin-right:6px"></span>${esc(t(p.strip))}</span>
-    <span class="muted">${esc(t("snapAge"))}: <strong style="color:var(--foreground)">${esc(agoTxt)}</strong></span>
-    <span class="muted">${esc(t("refreshNote"))}</span>`;
+  const agoTxt = mins == null ? "" : mins < 60
+    ? `${mins} ${lang === "tr" ? "dk" : "min"} ${t("ago")}`
+    : `${Math.floor(mins / 60)} ${lang === "tr" ? "sa" : "h"} ${t("ago")}`;
+  const date = new Date().toLocaleDateString(loc(), { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  $("today").textContent = agoTxt ? `${date} · ${t("snapAge")} ${agoTxt}` : date;
 }
 
 /* ===================== Portfolio rendering ===================== */
 
-const SEG = ["--green", "--purple", "--blue", "--amber", "--red"];
+const SEG = ["--s1", "--s2", "--s3", "--s4", "--s5"];
 let snapshot = null;
 let seedOffset = 0;
 let legs = "all";
@@ -402,50 +367,32 @@ function liveInputs() {
 
 function renderHero() {
   const d = model;
-  $("today").textContent = new Date().toLocaleDateString(loc(), { day: "numeric", month: "long", year: "numeric" });
   $("heroValue").textContent = usd(d.totalEquity);
 
-  const good = d.dailyPnl >= 0;
   const box = $("heroToday");
-  const tone = good ? "var(--green)" : "var(--red)";
-  box.style.background = `color-mix(in srgb, ${tone} 10%, transparent)`;
-  box.style.border = `1px solid color-mix(in srgb, ${tone} 30%, transparent)`;
-  const day = d.periods.find((p) => p.key === "1W");
-  box.innerHTML = `
-    <span style="font-size:15px">
-      <span class="eyebrow" style="letter-spacing:.14em;margin-right:8px">${esc(t("today"))}</span>
-      <span class="${cls(d.dailyPnl)}" style="font-weight:700">${signedUsd(d.dailyPnl)}</span>
-      <span class="muted"> · </span>
-      <span class="${cls(d.dailyPct)}" style="font-weight:700">${pct(d.dailyPct)}</span>
-    </span>
-    <span class="small">
-      ${d.subs.map((s) => `<span class="muted">${esc(s.code)} </span><span class="${cls(s.dailyPnl)}">${signedUsd(s.dailyPnl)}</span>`).join('<span class="muted"> · </span>')}
-    </span>`;
+  box.className = `delta tabular ${d.dailyPnl >= 0 ? "up" : "down"}`;
+  box.innerHTML = `<span style="font-weight:500;color:var(--muted)">${esc(t("today"))}</span>
+    <span>${signedUsd(d.dailyPnl)}</span><span>${pct(d.dailyPct)}</span>`;
 
   $("heroAnchors").innerHTML = `
-    ${esc(t("startAnchor"))} <strong style="color:var(--foreground)">${usd(d.startCapital)}</strong>
-    · ${esc(t("yearOpen"))} <strong style="color:var(--foreground)">${usd(d.yearOpen)}</strong><br>
-    ${esc(t("prevClose"))} ${esc(dstr(d.prevCloseDate))} <strong style="color:var(--foreground)">${usd(d.prevCloseEquity)}</strong>
+    ${esc(t("startAnchor"))} <strong style="color:var(--ink)">${usd(d.startCapital)}</strong>
+    · ${esc(t("yearOpen"))} <strong style="color:var(--ink)">${usd(d.yearOpen)}</strong>
+    · ${esc(t("prevClose"))} <strong style="color:var(--ink)">${usd(d.prevCloseEquity)}</strong>
     ${d.subs.some((s) => s.currency === "TRY")
-      ? `<br>USD/TRY <strong style="color:var(--foreground)">${nf(d.usdTry, 4)}</strong>
-         <span class="muted">· ${esc(d.usdTryLive ? t("fxNote") : t("sample"))}</span>` : ""}`;
+      ? `<br>USD/TRY <strong style="color:var(--ink)">${nf(d.usdTry, 4)}</strong> · ${esc(d.usdTryLive ? t("fxNote") : t("sample"))}` : ""}`;
 
   $("periods").innerHTML = d.periods.map((p) => `
-    <div>
-      <div class="eyebrow" style="letter-spacing:.16em;font-size:10px">${esc(lang === "tr" ? p.labelTr : p.labelEn)}</div>
-      <div class="tabular ${cls(p.portfolio)}" style="font-size:1.5rem;font-weight:700;margin-top:3px;font-family:var(--font-heading)">${pct(p.portfolio)}</div>
-      <div class="small tabular" style="margin-top:2px">
-        <span class="${cls(p.amount)}">${signedUsd(p.amount)}</span>
-        <span class="muted"> · SPX </span><span class="${cls(p.spx)}">${pct(p.spx)}</span>
-        <span class="muted"> · NDX </span><span class="${cls(p.ndx)}">${pct(p.ndx)}</span>
-      </div>
-      <div class="muted xsmall" style="margin-top:2px">${esc(dstr(p.fromDate))}</div>
+    <div class="stat">
+      <div class="label">${esc(lang === "tr" ? p.labelTr : p.labelEn)}</div>
+      <div class="stat-value tabular ${cls(p.portfolio)}">${pct(p.portfolio)}</div>
+      <div class="tabular ${cls(p.amount)}" style="font-weight:600">${signedUsd(p.amount)}</div>
+      <div class="label tabular" style="margin-top:6px">S&amp;P <span class="${cls(p.spx)}">${pct(p.spx)}</span> · Nasdaq <span class="${cls(p.ndx)}">${pct(p.ndx)}</span></div>
     </div>`).join("");
 }
 
 function renderAllocation() {
   const d = model;
-  const segs = d.subs.map((s, i) => ({ value: s.total, color: s.accent ?? SEG[i % SEG.length] }));
+  const segs = d.subs.map((s, i) => ({ value: s.total, color: SEG[i % SEG.length] }));
   $("donut").innerHTML = donut(segs, t("total"), "$" + (d.totalEquity / 1e6).toFixed(2) + "M");
 
   $("allocTbl").innerHTML = `
@@ -453,7 +400,7 @@ function renderAllocation() {
       <th class="r">${esc(t("cash"))}</th><th class="r">${esc(t("weight"))}</th></tr></thead>
     <tbody>${d.subs.map((s, i) => `
       <tr>
-        <td><span class="dot" style="background:var(${s.accent ?? SEG[i % SEG.length]});margin-right:8px"></span>${esc(s.name[lang])}</td>
+        <td><span class="dot" style="background:var(${SEG[i % SEG.length]});margin-right:8px"></span>${esc(s.name[lang])}</td>
         <td class="r">${usd(s.position)}</td>
         <td class="r">${usd(s.cash)}</td>
         <td class="r">${nf((s.total / d.totalEquity) * 100, 1)}%</td>
@@ -476,44 +423,29 @@ function renderAllocation() {
 }
 
 function renderHoldings() {
-  $("holdingsWrap").innerHTML = model.subs.map((s) => `
-    <section class="card">
-      <div class="card-head">
-        <div>
-          <h3 style="font-size:15px;font-weight:600">${esc(s.name[lang])}</h3>
-          <div class="muted xsmall">${esc(s.note[lang])}</div>
-        </div>
-        <span class="muted xsmall tabular">
-          ${usd(s.position)} · ${s.holdings.length} ${esc(t("stocks"))} · ${esc(t("cash"))} ${usd(s.cash)}
-        </span>
-      </div>
-      <div class="scroll-x"><table class="tbl">
-        <thead><tr>
-          <th>${esc(t("ticker"))}</th><th>${esc(t("trend"))}</th><th class="r">${esc(t("lots"))}</th>
-          <th class="r">${esc(t("avgCost"))}</th><th class="r">${esc(t("last"))}</th>
-          <th class="r">${esc(t("value"))}</th><th class="r">${esc(t("dayPnl"))}</th>
-          <th class="r">${esc(t("dayPct"))}</th><th class="r">${esc(t("totalPct"))}</th>
-          <th class="r">${esc(t("totalPnl"))}</th>
-        </tr></thead>
-        <tbody>${s.holdings.map((h) => {
-          const cur = h.currency === "TRY" ? "₺" : "$";
-          const money = (v, d = 2) => cur + nf(v, d);
-          return `<tr>
-            <td><strong>${esc(h.ticker)}</strong>${h.live ? `<span class="tag">${esc(t("live"))}</span>` : ""}
-              <div class="muted xsmall" style="font-weight:400">${esc(h.label)}</div></td>
-            <td>${spark(h.native, h.dailyPct >= 0)}</td>
-            <td class="r">${nf(h.lots, 0)}</td>
-            <td class="r">${money(h.avgCost)}</td>
-            <td class="r">${money(h.price)}</td>
-            <td class="r">${usd(h.posValue)}</td>
-            <td class="r ${cls(h.dailyPnl)}">${signedUsd(h.dailyPnl)}</td>
-            <td class="r ${cls(h.dailyPct)}">${pct(h.dailyPct)}</td>
-            <td class="r ${cls(h.totalPnlPct)}">${pct(h.totalPnlPct)}</td>
-            <td class="r ${cls(h.totalPnl)}">${signedUsd(h.totalPnl)}</td>
-          </tr>`;
-        }).join("")}</tbody>
-      </table></div>
-    </section>`).join("");
+  const d = model;
+  $("holdMeta").textContent = `${d.holdings.length} ${t("stocks")} · ${d.subs.length} ${lang === "tr" ? "alt portföy" : "sub-portfolios"}`;
+  const head = `<thead><tr>
+      <th>${esc(t("ticker"))}</th><th>${esc(t("trend"))}</th><th class="r">${esc(t("last"))}</th>
+      <th class="r">${esc(t("dayPct"))}</th><th class="r">${esc(t("value"))}</th>
+      <th class="r">${esc(t("totalPnl"))}</th><th class="r">${esc(t("totalPct"))}</th></tr></thead>`;
+  const body = d.subs.map((s) => `
+    <tr class="grp"><td colspan="7">${esc(s.name[lang])}
+      <span class="gmeta">${usd(s.position)} · ${esc(t("cash"))} ${usd(s.cash)}</span></td></tr>
+    ${s.holdings.map((h) => {
+      const cur = h.currency === "TRY" ? "₺" : "$";
+      return `<tr>
+        <td><strong>${esc(h.ticker)}</strong>${h.live ? `<span class="tag">${esc(t("live"))}</span>` : ""}
+          <span class="sub">${esc(h.label)} · ${nf(h.lots, 0)} ${esc(t("lots").toLowerCase())} @ ${cur}${nf(h.avgCost)}</span></td>
+        <td>${spark(h.native, h.dailyPct >= 0)}</td>
+        <td class="r">${cur}${nf(h.price)}</td>
+        <td class="r ${cls(h.dailyPct)}">${pct(h.dailyPct)}</td>
+        <td class="r">${usd(h.posValue)}</td>
+        <td class="r ${cls(h.totalPnl)}">${signedUsd(h.totalPnl)}</td>
+        <td class="r ${cls(h.totalPnlPct)}">${pct(h.totalPnlPct)}</td>
+      </tr>`;
+    }).join("")}`).join("");
+  $("holdTbl").innerHTML = head + `<tbody>${body}</tbody>`;
 }
 
 function renderTransactions() {
@@ -546,10 +478,10 @@ function renderRisk() {
   const biggest = d.holdings.slice().sort((a, b) => b.posValue - a.posValue)[0];
 
   const card = (label, value, meta, tone) => `
-    <div class="card" style="padding:14px 16px">
-      <div class="eyebrow" style="letter-spacing:.1em;font-size:10.5px">${esc(label)}</div>
-      <div class="tabular ${tone ?? ""}" style="font-size:1.45rem;font-weight:700;font-family:var(--font-heading);margin-top:2px">${value}</div>
-      <div class="muted xsmall">${esc(meta)}</div>
+    <div>
+      <div class="label">${esc(label)}</div>
+      <div class="tabular ${tone ?? ""}" style="font:700 1.5rem var(--display);margin-top:2px">${value}</div>
+      <div class="label">${esc(meta)}</div>
     </div>`;
 
   $("riskCards").innerHTML = [
@@ -586,7 +518,7 @@ function renderRisk() {
 
 function renderSnapshot() {
   if (!snapshot) {
-    $("snapCards").innerHTML = `<div class="card" style="padding:14px 16px"><span class="muted small">${esc(t("noSnapshot"))}</span></div>`;
+    $("snapCards").innerHTML = `<div class="card" style="padding:16px 18px"><span class="muted">${esc(t("noSnapshot"))}</span></div>`;
     $("bistTbl").innerHTML = ""; $("fxTbl").innerHTML = "";
     return;
   }
@@ -605,10 +537,10 @@ function renderSnapshot() {
   if (snapshot.aapl?.ok) cards.push(["AAPL " + (lang === "tr" ? "gelir" : "revenue"), "$" + (snapshot.aapl.data.revenue / 1e9).toFixed(1) + "B", "SEC EDGAR"]);
 
   $("snapCards").innerHTML = cards.map(([k, v, m, ch]) => `
-    <div class="card" style="padding:14px 16px">
-      <div class="eyebrow" style="letter-spacing:.1em;font-size:10.5px">${esc(k)}</div>
-      <div class="tabular" style="font-size:1.4rem;font-weight:700;font-family:var(--font-heading);margin-top:2px">${esc(v)}</div>
-      <div class="muted xsmall">${esc(m)}${ch == null ? "" : ` · <span class="${cls(ch)}">${pct(ch)}</span>`}</div>
+    <div class="card" style="padding:16px 18px">
+      <div class="label">${esc(k)}</div>
+      <div class="tabular" style="font:700 1.5rem var(--display);margin-top:2px">${esc(v)}</div>
+      <div class="label">${esc(m)}${ch == null ? "" : ` · <span class="${cls(ch)}">${pct(ch)}</span>`}</div>
     </div>`).join("");
 
   const rows = [...(snapshot.bist?.data?.indices ?? []), ...(snapshot.bist?.data?.watchlist ?? [])];
@@ -746,22 +678,12 @@ function chips(host, items, onPick) {
 }
 
 function init() {
-  setTheme(store.get("fa.theme", "dark"));
+  setTheme(store.get("fa.theme", "light"));
   setLang(store.get("fa.lang", "en"));
 
-  // Nav: groups collapse, links scroll, the jump box filters (⌘K focuses it).
+  // Nav links scroll to their section; on a phone they also close the drawer.
   $("nav").addEventListener("click", (e) => {
-    const g = e.target.closest("[data-group]");
-    if (g) { openGroups[g.dataset.group] = !openGroups[g.dataset.group]; renderNav($("jump").value); return; }
-    if (e.target.closest(".nav-link")) document.body.classList.remove("nav-open");
-  });
-  $("jump").addEventListener("input", (e) => renderNav(e.target.value));
-  $("jump").addEventListener("keydown", (e) => {
-    if (e.key === "Escape") { e.target.value = ""; renderNav(); }
-    if (e.key === "Enter") { const first = el(".nav-link[data-sec]"); if (first) first.click(); }
-  });
-  addEventListener("keydown", (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); $("jump").focus(); }
+    if (e.target.closest("a")) document.body.classList.remove("nav-open");
   });
   el("[data-open-nav]").addEventListener("click", () => document.body.classList.add("nav-open"));
   el("[data-close-nav]").addEventListener("click", () => document.body.classList.remove("nav-open"));

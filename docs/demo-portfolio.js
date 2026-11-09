@@ -213,10 +213,10 @@ export function buildPortfolio(opts = {}) {
   const monthStart = dates.findIndex((d) => d.getFullYear() === today.getFullYear() && d.getMonth() === today.getMonth());
   const yearStart = dates.findIndex((d) => d.getFullYear() === today.getFullYear());
   const periods = [
-    { key: "1W", labelTr: "HAFTA (SON 5 İŞLEM GÜNÜ)", labelEn: "WEEK (LAST 5 SESSIONS)", from: Math.max(0, dates.length - 6) },
-    { key: "MTD", labelTr: "AY BAŞINDAN BERİ", labelEn: "MONTH TO DATE", from: Math.max(0, monthStart - 1) },
-    { key: "YTD", labelTr: "YIL BAŞINDAN BERİ", labelEn: "YEAR TO DATE", from: Math.max(0, yearStart - 1) },
-    { key: "ALL", labelTr: "SERİ BAŞINDAN BERİ", labelEn: "SINCE SERIES START", from: 0 },
+    { key: "1W", labelTr: "Son 5 işlem günü", labelEn: "Last 5 sessions", from: Math.max(0, dates.length - 6) },
+    { key: "MTD", labelTr: "Ay başından beri", labelEn: "Month to date", from: Math.max(0, monthStart - 1) },
+    { key: "YTD", labelTr: "Yıl başından beri", labelEn: "Year to date", from: Math.max(0, yearStart - 1) },
+    { key: "ALL", labelTr: "Seri başından beri", labelEn: "Since series start", from: 0 },
   ].map((p) => {
     const base = equity[p.from];
     const amount = totalEquity - base;
