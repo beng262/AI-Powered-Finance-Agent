@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AI Powered Finance Agent">
+  <!-- Efor palette: navy tile, cyan accent, white line. -->
+  <rect width="64" height="64" rx="16" fill="#0b2545"/>
+  <!-- subtle depth: a lighter wash from the top-left, so the tile is not a flat swatch -->
+  <rect width="64" height="64" rx="16" fill="url(#g)"/>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#14396b" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#0b2545" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- The letter A: two legs meeting at an apex -->
+  <path d="M14 51 L32 12 L50 51" fill="none" stroke="#00daff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- The crossbar is a price line: it climbs from the left leg to the right -->
+  <path d="M20.5 41 L27 35 L32.5 39 L41 28" fill="none" stroke="#ffffff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Routing node where the line meets the leg: the agent's decision point -->
+  <circle cx="41" cy="28" r="5.2" fill="#0b2545" stroke="#ffffff" stroke-width="3"/>
+  <circle cx="41" cy="28" r="1.9" fill="#00daff"/>
+</svg>

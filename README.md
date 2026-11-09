@@ -1,3 +1,5 @@
+<img src="docs/logo.svg" alt="" width="72" align="right" />
+
 # AI Powered Finance Agent
 
 An intent-routing finance agent over a Turkish and US market data layer.
@@ -34,6 +36,12 @@ A static page, no build step, three kinds of number on it and they are kept visi
 - **A live market snapshot.** Real Borsa İstanbul closes, real CBRT reference rates, VIX
   and SEC fundamentals, refreshed by a scheduled GitHub Action. The Turkish leg of the
   sample portfolio is marked to those closes and converted at that day's TCMB rate.
+- **A small model, in your browser.** "Ask the agent" can load Qwen2.5-1.5B through WebGPU (about
+  850 MB once, cached, nothing sent anywhere) to choose the tool. It is used for routing only:
+  on 20 English and Turkish questions it got 19 right against 9 for the keyword rules, while
+  Qwen2.5-0.5B was not usable. It does not word the answer - when it did, it replied to a
+  question about cash with the total-portfolio figure, a true number on the wrong claim that a
+  number check cannot catch - so every sentence is composed by code from computed figures.
 - **The agent core, running on your input.** The intent router, the prompt guard and the
   metrics are pure functions with no network and no model, so the page imports the
   library's own compiled modules from `docs/lib` and runs them client-side.

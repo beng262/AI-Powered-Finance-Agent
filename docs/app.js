@@ -16,6 +16,8 @@ import { detectInjection, sanitizeInput, scrubOutput } from "./lib/guard.js";
 import * as M from "./lib/metrics.js";
 import { routeOffline } from "./lib/rules.js";
 import { buildPortfolio } from "./demo-portfolio.js";
+import { runTool } from "./agent-tools.js";
+import * as LLM from "./agent-llm.js";
 
 const $ = (id) => document.getElementById(id);
 const el = (sel) => document.querySelector(sel);
@@ -50,6 +52,9 @@ const DICT = {
     "agent.title": "Agent core, running in your browser",
     "agent.note": "The router rules, the guard and the metrics are pure functions with no network and no model, so they run client-side. These are the library's own compiled modules, not a re-implementation.",
     "router.title": "Intent router",
+    "ask.title": "Ask the agent", "ask.sub": "Guard, router, tool, answer",
+    "ask.label": "Ask about the sample portfolio. Every figure in the answer is computed by code; the model only decides which tool to run.",
+    "ask.go": "Ask",
     "router.label": "Ask it something. With no model configured this is the deterministic keyword path – what a fresh clone gets.",
     "guard.title": "Prompt guard",
     "guard.label": "Input is sanitised, then matched against the injection patterns.",
@@ -111,6 +116,9 @@ const DICT = {
     "agent.title": "Ajan çekirdeği, tarayıcınızda çalışıyor",
     "agent.note": "Yönlendirme kuralları, güvenlik filtresi ve metrikler ağ ve model gerektirmeyen saf fonksiyonlardır; bu yüzden istemcide çalışırlar. Bunlar kütüphanenin derlenmiş kendi modülleri, bir kopyası değil.",
     "router.title": "Niyet yönlendirici",
+    "ask.title": "Ajana sor", "ask.sub": "Güvenlik, yönlendirici, araç, cevap",
+    "ask.label": "Örnek portföy hakkında sorun. Cevaptaki her rakamı kod hesaplar; model yalnızca hangi aracın çalışacağına karar verir.",
+    "ask.go": "Sor",
     "router.label": "Bir şey sorun. Model tanımlı değilken deterministik anahtar kelime yolu çalışır – yeni bir kopyanın varsayılanı budur.",
     "guard.title": "Prompt güvenliği",
     "guard.label": "Girdi önce temizlenir, sonra enjeksiyon kalıplarıyla karşılaştırılır.",
@@ -195,6 +203,7 @@ function setLang(next) {
   renderNav();
   renderAll();
   runRouter(); runGuard(); runMetrics();
+  renderModelBar(); renderAskChips();
 }
 
 /* ===================== Sidebar nav ===================== */
@@ -213,6 +222,7 @@ const NAV = [
     { href: "fx", label: { en: "CBRT rates", tr: "TCMB kurları" } },
   ] },
   { title: { en: "Agent", tr: "Ajan" }, items: [
+    { href: "ask", label: { en: "Ask the agent", tr: "Ajana sor" } },
     { href: "router", label: { en: "Intent router", tr: "Niyet yönlendirici" } },
     { href: "guard", label: { en: "Prompt guard", tr: "Prompt güvenliği" } },
     { href: "metrics", label: { en: "Metrics", tr: "Metrikler" } },
@@ -648,6 +658,127 @@ function runMetrics() {
     (bt ? line("smaCross vs B&H", `${nf(bt.strategyPct)}% / ${nf(bt.buyHoldPct)}%`) : "");
 }
 
+
+/* ===================== Ask the agent ===================== */
+
+const ASK_SAMPLES = {
+  en: ["How much is my portfolio worth?", "How risky is my portfolio?", "Is AAPL overbought?",
+       "How does AMZN correlate with MSFT?", "What is KO's P/E ratio?", "Write me a haiku"],
+  tr: ["Portföyüm ne kadar?", "Portföyümün riski ne kadar?", "THYAO trendi nasıl?",
+       "AAPL ile MSFT korelasyonu", "Bana bir şiir yaz", "Bugün ne kadar kazandım?"],
+};
+let gpuOK = false;
+
+const MODEL_T = {
+  en: {
+    off: `Keyword rules are routing questions (9 of 20 right in our test). Load a small on-device model to do better: ${LLM.MODEL_LABEL}, ~${LLM.MODEL_MB} MB once, runs in this browser, nothing is sent anywhere.`,
+    nogpu: "This browser has no WebGPU, so the on-device model cannot run. Keyword rules are routing questions.",
+    btn: `Load model (~${LLM.MODEL_MB} MB)`, loading: "Loading…", on: "Model running on this device",
+    ready: `${LLM.MODEL_LABEL} is running on this device through WebGPU. It picks the intent (19 of 20 right in our test); the code computes every number. The first question takes about 40 s while the GPU warms up.`,
+    fail: "The model could not load. Keyword rules are still routing questions.",
+  },
+  tr: {
+    off: `Sorular anahtar kelime kurallarıyla yönlendiriliyor (testimizde 20'de 9 doğru). Daha iyisi için küçük bir cihaz içi model yükleyin: ${LLM.MODEL_LABEL}, bir kez ~${LLM.MODEL_MB} MB, bu tarayıcıda çalışır, hiçbir yere veri gönderilmez.`,
+    nogpu: "Bu tarayıcıda WebGPU yok, cihaz içi model çalışamaz. Sorular anahtar kelime kurallarıyla yönlendiriliyor.",
+    btn: `Modeli yükle (~${LLM.MODEL_MB} MB)`, loading: "Yükleniyor…", on: "Model bu cihazda çalışıyor",
+    ready: `${LLM.MODEL_LABEL} bu cihazda WebGPU ile çalışıyor. Niyeti o seçer (testimizde 20'de 19 doğru); her rakamı kod hesaplar. İlk soru, GPU ısınırken yaklaşık 40 sn sürer.`,
+    fail: "Model yüklenemedi. Sorular hâlâ anahtar kelime kurallarıyla yönlendiriliyor.",
+  },
+};
+
+function renderModelBar() {
+  const m = MODEL_T[lang];
+  const btn = $("modelBtn");
+  if (LLM.isLoaded()) { $("modelLine").textContent = m.ready; btn.textContent = m.on; btn.disabled = true; return; }
+  if (!gpuOK) { $("modelLine").textContent = m.nogpu; btn.textContent = m.btn; btn.disabled = true; return; }
+  if (btn.dataset.busy === "1") return;
+  $("modelLine").textContent = m.off; btn.textContent = m.btn; btn.disabled = false;
+}
+
+async function enableModel() {
+  const btn = $("modelBtn"), bar = $("progress"), fill = $("progressFill");
+  btn.dataset.busy = "1"; btn.disabled = true; btn.textContent = MODEL_T[lang].loading; bar.hidden = false;
+  try {
+    await LLM.loadModel((r) => {
+      fill.style.width = Math.round(r.progress * 100) + "%";
+      $("modelLine").textContent = r.text.replace(/\s+/g, " ").slice(0, 110);
+    });
+  } catch {
+    btn.dataset.busy = "0"; bar.hidden = true; fill.style.width = "0";
+    $("modelLine").textContent = MODEL_T[lang].fail; btn.disabled = false; btn.textContent = MODEL_T[lang].btn;
+    return;
+  }
+  btn.dataset.busy = "0"; bar.hidden = true;
+  renderModelBar();
+}
+
+const fmt = () => ({ usd, signedUsd, pct, nf });
+
+function renderAskChips() {
+  const list = ASK_SAMPLES[lang];
+  $("askChips").innerHTML = list.map((q, i) => `<button class="chip" type="button" data-chip="${i}">${esc(q)}</button>`).join("");
+  $("askChips").onclick = (e) => {
+    const b = e.target.closest(".chip");
+    if (!b) return;
+    $("askQ").value = list[Number(b.dataset.chip)];
+    ask();
+  };
+}
+
+// Each call takes a ticket; a call whose ticket is stale drops its result. The model answers
+// one request at a time, so without this a slow earlier question can finish AFTER a newer one
+// and overwrite its answer.
+let askSeq = 0;
+
+async function ask() {
+  const mine = ++askSeq;
+  const raw = $("askQ").value;
+  const clean = sanitizeInput(raw);
+  if (!clean) return;
+  const out = $("askOut");
+  const stepRow = (name, body, extra = "") => `<div class="step ${extra}"><div class="step-name">${esc(name)}</div><div>${body}</div></div>`;
+  const N = lang === "tr"
+    ? { guard: "Güvenlik", router: "Yönlendirici", tool: "Araç", answer: "Cevap", clean: "temiz", blocked: "engellendi", model: "model", rules: "kurallar", ms: "ms",
+        template: "cevap, aracın hesapladığı rakamlardan kodla oluşturuldu; model yalnızca aracı seçti" }
+    : { guard: "Guard", router: "Router", tool: "Tool", answer: "Answer", clean: "clean", blocked: "blocked", model: "model", rules: "rules", ms: "ms",
+        template: "answer composed by code from the tool's figures; the model only chose the tool" };
+
+  out.innerHTML = `<div class="trace" data-q="${esc(clean)}">${stepRow(N.guard, "…")}</div>`;
+
+  const inj = detectInjection(clean);
+  if (inj.injected) {
+    out.innerHTML = `<div class="trace">${stepRow(N.guard, `<strong class="down">${esc(N.blocked)}</strong> <span class="via">${esc(inj.pattern)}</span>`, "blocked")}</div>`;
+    return;
+  }
+
+  // Router: the model when it is loaded, the keyword rules otherwise (and as the fallback).
+  const t0 = performance.now();
+  let intent = null, via = "rules";
+  if (LLM.isLoaded()) { intent = await LLM.classify(clean); if (mine !== askSeq) return; if (intent) via = "model"; }
+  const rule = routeOffline(clean);
+  if (!intent) intent = rule.intent;
+  const ms = Math.round(performance.now() - t0);
+
+  const result = runTool(intent, clean, model, fmt(), lang);
+
+  // The answer is composed by code from the tool's figures. The model only chose the tool:
+  // letting it word the answer produced a true number on the wrong claim (see agent-llm.js).
+  const text = scrubOutput(result.summary);
+  const source = N.template;
+
+  const facts = result.facts.length ? `
+    <div class="scroll-x" style="margin-top:16px;border:1px solid var(--line);border-radius:10px"><table class="tbl"><tbody>
+      ${result.facts.map(([l, v, tone]) => `<tr><td class="muted">${esc(l)}</td><td class="r ${tone ?? ""}" style="font-weight:700">${esc(v)}</td></tr>`).join("")}
+    </tbody></table></div>` : "";
+
+  out.innerHTML = `<div class="trace" data-q="${esc(clean)}" data-done="1">
+      ${stepRow(N.guard, `<strong class="up">${esc(N.clean)}</strong>`)}
+      ${stepRow(N.router, `<span class="intent">${esc(intent)}</span><span class="via">${esc(N[via])} · ${ms} ${N.ms}</span>`)}
+      ${stepRow(N.tool, `<code>${esc(result.tool)}</code>${result.notice ? `<span class="via">${esc(result.notice)}</span>` : ""}`)}
+      ${stepRow(N.answer, `<div class="answer">${esc(text)}</div><span class="answer-src">${esc(source)}</span>`)}
+    </div>${facts}`;
+}
+
 /* ===================== Wiring ===================== */
 
 function renderAll() {
@@ -713,6 +844,12 @@ function init() {
   $("inj").addEventListener("input", runGuard);
   $("ser").addEventListener("input", runMetrics);
   runRouter(); runGuard(); runMetrics();
+
+  $("askGo").addEventListener("click", ask);
+  $("askQ").addEventListener("keydown", (e) => { if (e.key === "Enter") ask(); });
+  $("modelBtn").addEventListener("click", enableModel);
+  LLM.webgpuAvailable().then((ok) => { gpuOK = ok; renderModelBar(); });
+  renderAskChips(); renderModelBar();
 
   setInterval(renderPhase, 30_000);
   rebuild();
