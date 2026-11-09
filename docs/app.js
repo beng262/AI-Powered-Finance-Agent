@@ -190,6 +190,7 @@ function setLang(next) {
   store.set("fa.lang", next);
   document.querySelectorAll("[data-lang-set]").forEach((b) =>
     b.setAttribute("aria-pressed", String(b.dataset.langSet === next)));
+  // [data-i] is reserved for i18n keys; other indexed elements must use a different attribute.
   document.querySelectorAll("[data-i]").forEach((n) => { n.innerHTML = t(n.dataset.i); });
   renderNav();
   renderAll();
@@ -406,8 +407,9 @@ function renderHero() {
 
   const good = d.dailyPnl >= 0;
   const box = $("heroToday");
-  box.style.background = good ? "rgba(39,194,129,.10)" : "rgba(255,93,108,.09)";
-  box.style.border = `1px solid ${good ? "rgba(39,194,129,.30)" : "rgba(255,93,108,.28)"}`;
+  const tone = good ? "var(--green)" : "var(--red)";
+  box.style.background = `color-mix(in srgb, ${tone} 10%, transparent)`;
+  box.style.border = `1px solid color-mix(in srgb, ${tone} 30%, transparent)`;
   const day = d.periods.find((p) => p.key === "1W");
   box.innerHTML = `
     <span style="font-size:15px">
@@ -678,7 +680,7 @@ function runRouter() {
   const r = routeOffline(clean);
   const ents = Object.entries(r.entities);
   $("qOut").innerHTML =
-    `<span class="muted">${esc(t("intent"))}</span>        <strong style="color:var(--accent)">${esc(r.intent)}</strong>\n` +
+    `<span class="muted">${esc(t("intent"))}</span>        <strong style="color:var(--accent-text)">${esc(r.intent)}</strong>\n` +
     `<span class="muted">${esc(t("confidence"))}</span>    ${nf(r.confidence, 2)}\n` +
     `<span class="muted">${esc(t("entities"))}</span>      ${ents.length ? esc(ents.map(([k, v]) => `${k}=${v}`).join(", ")) : "–"}\n` +
     `<span class="muted">${esc(t("tools"))}</span> ${esc(r.required_tools.join(", ") || "–")}\n` +
@@ -736,10 +738,10 @@ function rebuild() {
 }
 
 function chips(host, items, onPick) {
-  $(host).innerHTML = items.map((x, i) => `<button class="chip" type="button" data-i="${i}">${esc(x.label ?? x)}</button>`).join("");
+  $(host).innerHTML = items.map((x, i) => `<button class="chip" type="button" data-chip="${i}">${esc(x.label ?? x)}</button>`).join("");
   $(host).onclick = (e) => {
     const b = e.target.closest(".chip");
-    if (b) onPick(items[Number(b.dataset.i)]);
+    if (b) onPick(items[Number(b.dataset.chip)]);
   };
 }
 
