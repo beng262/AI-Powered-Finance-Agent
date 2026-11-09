@@ -4,3 +4,10 @@ dist/
 .env
 .env.local
 *.log
+
+# Caviar Dreams may not be redistributed (see docs/app.css). Never commit the font files.
+docs/fonts/
+*.ttf
+*.otf
+*.woff
+*.woff2

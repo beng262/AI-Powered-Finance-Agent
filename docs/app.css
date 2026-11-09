@@ -15,6 +15,17 @@
    - Borders are drawn once; shadows are translucent and only on the main cards.
    ------------------------------------------------------------------------------------ */
 
+/* Caviar Dreams by Lauren Thompson. Its licence allows personal and commercial use but
+   forbids redistributing the font data, so the files are deliberately NOT in this repo
+   and NOT served from Pages. These rules only match when the font is installed on the
+   viewer's machine; everyone else gets Quicksand (SIL OFL, served by Google Fonts), a
+   geometric rounded face of the same character, so the page never depends on a file we
+   are not allowed to host. */
+@font-face { font-family: "Caviar Dreams"; font-weight: 400; font-style: normal;
+  src: local("Caviar Dreams"), local("CaviarDreams"), local("CaviarDreams-Regular"); }
+@font-face { font-family: "Caviar Dreams"; font-weight: 700; font-style: normal;
+  src: local("Caviar Dreams Bold"), local("CaviarDreams-Bold"); }
+
 :root {
   color-scheme: light;
   /* surfaces + text */
@@ -40,7 +51,7 @@
   --shadow: 0 1px 2px rgba(11, 37, 69, .06), 0 6px 18px rgba(11, 37, 69, .06);
   --hover: #eaf6fb;
 
-  --display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --display: "Caviar Dreams", "Quicksand", "Segoe UI", system-ui, sans-serif;
   --body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
   --mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
   --radius: 12px;
@@ -126,19 +137,19 @@ a { color: inherit; }
 .brand-name { font: 700 16px/1.2 var(--display); color: var(--head); letter-spacing: -.01em; }
 .brand-sub { font-size: 13px; color: var(--muted); }
 
-.nav-label { font-size: 12px; font-weight: 600; color: var(--muted); padding: 0 10px; margin: 20px 0 6px; }
+.nav-label { font-size: 13px; font-weight: 700; color: var(--muted); padding: 0 10px; margin: 20px 0 6px; }
 .nav-label:first-child { margin-top: 0; }
 nav a {
   display: flex; align-items: center; padding: 8px 10px; margin-bottom: 2px;
   border-radius: 8px; border-left: 3px solid transparent;
-  color: var(--muted); text-decoration: none; font: 500 14.5px var(--display);
+  color: var(--muted); text-decoration: none; font: 700 14.5px var(--display);
   transition: background .15s, color .15s;
 }
 nav a:hover { background: var(--surface-2); color: var(--ink); }
 nav a.on { background: var(--accent-soft); color: var(--ink); font-weight: 700; border-left-color: var(--accent); }
 
 .side-foot { margin-top: auto; padding-top: 20px; display: grid; gap: 12px; }
-.ext { font: 500 14px var(--display); color: var(--muted); text-decoration: none; padding: 0 6px; }
+.ext { font: 700 14px var(--display); color: var(--muted); text-decoration: none; padding: 0 6px; }
 .ext:hover { color: var(--accent-text); }
 
 /* ---- Cards ---------------------------------------------------------------------- */

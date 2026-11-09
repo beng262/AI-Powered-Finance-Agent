@@ -336,7 +336,7 @@ function phaseNow() {
 function renderPhase() {
   const p = phaseNow();
   $("phase").innerHTML = `<span class="dot ${p.key === "open" ? "live-dot" : ""}" style="background:${p.color}"></span>
-    <span>${esc(t(p.label))}</span><span class="muted" style="font-weight:500">${esc(p.localTime)}</span>`;
+    <span>${esc(t(p.label))}</span><span class="muted" style="font-weight:700">${esc(p.localTime)}</span>`;
 
   const gen = snapshot?.generatedAt ? new Date(snapshot.generatedAt) : null;
   const mins = gen ? Math.max(0, Math.round((Date.now() - gen) / 60000)) : null;
@@ -371,7 +371,7 @@ function renderHero() {
 
   const box = $("heroToday");
   box.className = `delta tabular ${d.dailyPnl >= 0 ? "up" : "down"}`;
-  box.innerHTML = `<span style="font-weight:500;color:var(--muted)">${esc(t("today"))}</span>
+  box.innerHTML = `<span style="font-weight:700;color:var(--muted)">${esc(t("today"))}</span>
     <span>${signedUsd(d.dailyPnl)}</span><span>${pct(d.dailyPct)}</span>`;
 
   $("heroAnchors").innerHTML = `
