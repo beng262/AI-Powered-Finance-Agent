@@ -1,0 +1,23 @@
+{
+  // Browser build of the pure, dependency-free modules, emitted straight into docs/lib so
+  // the GitHub Pages demo runs the library's own code rather than a re-implementation.
+  // Only modules with no imports beyond types belong here: anything touching the network,
+  // the cache or the model provider cannot run in a page.
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
+    "outDir": "docs/lib",
+    "rootDir": "src/agents",
+    "declaration": false,
+    "strict": true,
+    "skipLibCheck": true,
+    "removeComments": false
+  },
+  "files": [
+    "src/agents/guard.ts",
+    "src/agents/metrics.ts",
+    "src/agents/rules.ts"
+  ]
+}

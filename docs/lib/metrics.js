@@ -3,13 +3,13 @@
 // "deterministik kod" + "denetlenebilir" principle). Inputs/formulae are surfaced as
 // a calculation trace by the calling service.
 export function sma(s, n) {
-    if (s.length < n || n <= 0)
+    if (!Number.isSafeInteger(n) || n <= 0 || s.length < n)
         return null;
     const slice = s.slice(-n);
     return slice.reduce((a, b) => a + b, 0) / n;
 }
 export function ema(s, n) {
-    if (s.length < n || n <= 0)
+    if (!Number.isSafeInteger(n) || n <= 0 || s.length < n)
         return null;
     const k = 2 / (n + 1);
     let e = s.slice(0, n).reduce((a, b) => a + b, 0) / n; // seed with SMA
@@ -19,7 +19,7 @@ export function ema(s, n) {
 }
 // Wilder's RSI over `n` periods (default 14). Returns 0..100 or null if too short.
 export function rsi(s, n = 14) {
-    if (s.length < n + 1)
+    if (!Number.isSafeInteger(n) || n <= 0 || s.length < n + 1)
         return null;
     let gain = 0, loss = 0;
     for (let i = 1; i <= n; i++) {
@@ -122,7 +122,7 @@ export function macd(s) {
 }
 // Bollinger Bands (20, 2σ) + %B position (0 = alt bant, 1 = üst bant).
 export function bollinger(s, n = 20, mult = 2) {
-    if (s.length < n)
+    if (!Number.isSafeInteger(n) || n <= 0 || s.length < n)
         return null;
     const win = s.slice(-n);
     const mid = win.reduce((a, b) => a + b, 0) / n;
@@ -186,7 +186,7 @@ export function smaCrossBacktest(s, fast = 10, slow = 30) {
 }
 export function linearForecast(s, horizon) {
     const n = s.length;
-    if (n < 10 || horizon < 1)
+    if (n < 10 || !Number.isSafeInteger(horizon) || horizon < 1)
         return null;
     // least-squares fit y = a*x + b over x = 0..n-1
     let sx = 0, sy = 0, sxx = 0, sxy = 0;

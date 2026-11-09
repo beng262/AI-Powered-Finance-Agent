@@ -14,11 +14,13 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && npm run docs:lib",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "demo": "node examples/smoke.mjs",
     "prepublishOnly": "npm run build",
-    "snapshot": "node scripts/snapshot.mjs"
+    "snapshot": "node scripts/snapshot.mjs",
+    "docs:lib": "tsc -p tsconfig.docs.json",
+    "offline": "node examples/offline.mjs"
   },
   "keywords": [
     "finance",
@@ -39,7 +41,7 @@
     "typescript": "^5.6.0",
     "@types/node": "^22.0.0"
   },
-  "author": "Bengisu Saraç <bengsrc@gmail.com> (https://beng262.github.io)",
+  "author": "Bengisu Sara\u00e7 <bengsrc@gmail.com> (https://beng262.github.io)",
   "homepage": "https://beng262.github.io/AI-Powered-Finance-Agent/",
   "repository": {
     "type": "git",

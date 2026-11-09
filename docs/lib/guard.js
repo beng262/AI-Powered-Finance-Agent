@@ -31,7 +31,10 @@ export function detectInjection(q) {
 const SECRET_PATTERNS = [
     /sqlserver:\/\/[^\s"']+/gi, // DB connection strings
     /password\s*=\s*[^;\s"']+/gi, // password=...
-    /\bsk-[A-Za-z0-9_-]{16,}(?![A-Za-z0-9_-])/g, // OpenAI-style keys
+    // Modern provider keys carry dashes and underscores (sk-proj-..., sk-ant-...), so a
+    // [A-Za-z0-9]-only class stops at the first dash and misses them entirely. The
+    // negative lookahead replaces \b, which does not fire after a dash or underscore.
+    /\bsk-[A-Za-z0-9_-]{16,}(?![A-Za-z0-9_-])/g,
     /\b[A-Fa-f0-9]{32,}\b/g, // long hex secrets / API keys
     /AZURE_OPENAI_API_KEY\s*[:=]\s*\S+/gi,
 ];

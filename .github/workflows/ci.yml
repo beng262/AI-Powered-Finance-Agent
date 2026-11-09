@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Emits dist/ and regenerates the browser copies in docs/lib.
+      - name: Build
+        run: npm run build
+
+      # docs/lib holds compiled copies of the pure modules that the Pages demo imports.
+      # They were hand-copied once and drifted from src/ - the published guard ran a
+      # different secret pattern than the library did. Regenerating in the build step and
+      # failing on a diff means that cannot happen again: edit src/, run `npm run docs:lib`,
+      # commit the result.
+      - name: Browser copies in docs/lib are in sync with src/
+        run: |
+          if ! git diff --exit-code -- docs/lib; then
+            echo "::error::docs/lib is stale. Run 'npm run docs:lib' and commit the result."
+            exit 1
+          fi
+
+      # Deterministic, no network, no model - safe to gate every push on.
+      - name: Offline checks
+        run: node examples/offline.mjs

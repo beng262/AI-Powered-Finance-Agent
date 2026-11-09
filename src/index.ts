@@ -8,6 +8,8 @@
 // ---- agent core -------------------------------------------------------------
 export * from "./agents/types.js";
 export { route } from "./agents/router.js";
+export { routeOffline, RULES } from "./agents/rules.js";
+export type { Rule } from "./agents/rules.js";
 export * as guard from "./agents/guard.js";
 export * as metrics from "./agents/metrics.js";
 

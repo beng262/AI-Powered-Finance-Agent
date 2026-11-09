@@ -1,0 +1,5 @@
+# tsc emits LF. Pinning line endings on the generated browser copies keeps them
+# byte-identical across platforms, which is what makes the docs/lib sync check in CI
+# meaningful. Scoped deliberately: normalising the whole tree would rewrite every
+# source file's line endings as a side effect of a demo-page change.
+/docs/lib/*.js text eol=lf
