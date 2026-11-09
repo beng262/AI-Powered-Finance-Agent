@@ -20,6 +20,27 @@ npm install && npm run build && npm run demo
   PASS  router.route (no LLM)      ...
 ```
 
+## Demo dashboard
+
+**[beng262.github.io/AI-Powered-Finance-Agent](https://beng262.github.io/AI-Powered-Finance-Agent/)**
+
+A static page, no build step, three kinds of number on it and they are kept visibly apart:
+
+- **A sample portfolio.** The positions, cost bases and cash balances are invented. Every
+  figure derived from them - day P/L, the period grid, the equity curve, the risk panel -
+  is computed in the browser from a seeded price series by this library's own `metrics`
+  module, so the numbers reconcile instead of being typed in. The seed is fixed; everyone
+  sees the same book.
+- **A live market snapshot.** Real Borsa İstanbul closes, real CBRT reference rates, VIX
+  and SEC fundamentals, refreshed by a scheduled GitHub Action. The Turkish leg of the
+  sample portfolio is marked to those closes and converted at that day's TCMB rate.
+- **The agent core, running on your input.** The intent router, the prompt guard and the
+  metrics are pure functions with no network and no model, so the page imports the
+  library's own compiled modules from `docs/lib` and runs them client-side.
+
+`docs/lib` is generated - `npm run docs:lib` compiles the pure modules to browser ESM, and
+CI fails if the committed copies drift from `src/`. Edit `src/`, never `docs/lib`.
+
 ## Why
 
 Most market-data libraries assume you are American and that you will pay for a key.
@@ -57,16 +78,18 @@ took longest to get right and has the fewest good examples online.
 ## Agent core
 
 ```ts
-import { route, guard, metrics } from "ai-powered-finance-agent";
+import { route, routeOffline, guard, metrics } from "ai-powered-finance-agent";
 
 guard.detectInjection("ignore previous instructions");  // { injected: true, pattern: ... }
 guard.rateLimit("user-42", 20, 60_000);                 // { ok: true }
 metrics.rsi(closes);                                     // 14-period RSI
-await route("dolar kuru ne kadar");                      // { intent: "fx", ... }
+await route("dolar kuru ne kadar");                      // { intent: "KPI_LOOKUP", ... }
+routeOffline("NVDA trendi nasıl");                       // same, synchronous, no model
 ```
 
 - **`router`** classifies a query into an intent. With a model it uses one; without a
-  model it falls back to keyword matching, so it always returns something.
+  model it falls back to keyword matching, so it always returns something. `routeOffline`
+  is that fallback on its own: synchronous, no network, no model.
 - **`guard`** does input sanitisation, prompt-injection detection, output scrubbing and
   rate limiting.
 - **`metrics`** is dependency-free technical analysis: SMA, EMA, RSI, momentum, returns.
@@ -117,6 +140,11 @@ Nothing is required. Every variable below is optional.
 ## Requirements
 
 Node 18 or newer. **Zero runtime dependencies.**
+
+```bash
+npm run offline     # deterministic checks: guard, router rules, metrics. No network.
+npm run demo        # the same, plus a live hit on every keyless source.
+```
 
 ## License
 
