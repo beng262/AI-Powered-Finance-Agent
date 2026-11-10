@@ -20,14 +20,20 @@
 
    Measured while building this (20 questions, English and Turkish, the same prompt):
    keyword rules 9/20, Qwen2.5-0.5B collapsed onto one label (5/15 on an earlier set),
-   Qwen2.5-1.5B 19/20, about 2-4 s per question after a one-time ~40 s GPU warm-up.
+   Qwen2.5-1.5B 19/20, 0.4-1 s per question once warm. The warm-up (GPU kernel compile) is
+   25-40 s per page visit; loadModel() does it behind a visible phase so it never lands
+   inside someone's first question.
    ------------------------------------------------------------------------------------ */
 
 // Pinned: an unpinned CDN import means the page can change under us.
 const WEBLLM = "https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm@0.2.86/+esm";
-export const MODEL = "Qwen2.5-1.5B-Instruct-q4f16_1-MLC";
+// The q4f32_1 build, not q4f16_1. Both score 19/20 on our questions, but f32 warms up in
+// ~25-28 s against 32-40 s for f16 (two fresh-page samples each), and it runs on GPUs
+// without the `shader-f16` extension, which the f16 build requires.
+export const MODEL = "Qwen2.5-1.5B-Instruct-q4f32_1-MLC";
 export const MODEL_LABEL = "Qwen2.5-1.5B";
 export const MODEL_MB = 850;
+export const WARMUP_S = 30;
 
 export const INTENTS = ["KPI_LOOKUP", "RISK_ANALYSIS", "TREND_ANALYSIS", "CORRELATION", "FUNDAMENTALS", "WEB_SEARCH", "OUT_OF_SCOPE"];
 
@@ -63,6 +69,7 @@ const SCHEMA = JSON.stringify({
 
 let engine = null;
 let loading = null;
+let phase = "idle"; // idle | download | compile | ready
 
 export async function webgpuAvailable() {
   try {
@@ -71,26 +78,58 @@ export async function webgpuAvailable() {
   } catch { return false; }
 }
 
-export const isLoaded = () => engine !== null;
+/** True only once the model can answer instantly: downloaded AND compiled. */
+export const isLoaded = () => phase === "ready";
+export const isBusy = () => phase === "download" || phase === "compile";
 
-/** Download (first time) and start the model. Resolves once it can answer. */
-export function loadModel(onProgress) {
-  if (engine) return Promise.resolve(engine);
+/** Are the weights already in this browser's cache (so no 850 MB download)? */
+export async function isCached() {
+  try {
+    const webllm = await import(WEBLLM);
+    return await webllm.hasModelInCache(MODEL);
+  } catch { return false; }
+}
+
+/**
+ * Download (first time), compile, and warm the model. Resolves when it can answer.
+ *
+ * Where the time goes, measured on an integrated GPU: the download is a one-off (~45 s),
+ * loading cached weights is ~5 s, and then the FIRST inference of any kind takes 25-40 s
+ * while WebGPU compiles the model's kernels - after which a question takes 0.4-1 s. The
+ * JSON-schema grammar adds under a second, so it is not the cost. That compile is paid on
+ * every page visit (nothing persists it), so it is done here, behind a visible "compile"
+ * phase, rather than inside the visitor's first question.
+ *
+ * @param {(e: {phase: "download"|"compile", progress?: number, text?: string}) => void} [onUpdate]
+ */
+export function loadModel(onUpdate) {
+  if (phase === "ready") return Promise.resolve(engine);
   if (!loading) {
     loading = (async () => {
+      phase = "download";
       const webllm = await import(WEBLLM);
       engine = await webllm.CreateMLCEngine(MODEL, {
-        initProgressCallback: (r) => onProgress?.(r),
+        initProgressCallback: (r) => onUpdate?.({ phase: "download", progress: r.progress, text: r.text }),
       });
+      phase = "compile";
+      onUpdate?.({ phase: "compile" });
+      // A real constrained classification, so the exact kernels and the grammar path are the
+      // ones that get compiled - not a different code path that leaves the cost for later.
+      await engine.chat.completions.create({
+        messages: [{ role: "system", content: CLASSIFY_SYSTEM }, { role: "user", content: "what is my portfolio worth" }],
+        temperature: 0, max_tokens: 30,
+        response_format: { type: "json_object", schema: SCHEMA },
+      });
+      phase = "ready";
       return engine;
-    })().catch((e) => { loading = null; engine = null; throw e; });
+    })().catch((e) => { loading = null; engine = null; phase = "idle"; throw e; });
   }
   return loading;
 }
 
 /** One of INTENTS, or null if the model produced nothing usable. */
 export async function classify(question) {
-  if (!engine) return null;
+  if (phase !== "ready") return null;
   try {
     const r = await engine.chat.completions.create({
       messages: [{ role: "system", content: CLASSIFY_SYSTEM }, { role: "user", content: question }],

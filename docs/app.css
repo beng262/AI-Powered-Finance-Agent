@@ -308,3 +308,8 @@ footer p { margin: 0 0 6px; max-width: 80ch; }
 .answer-src { display: block; margin-top: 6px; font-size: 13px; color: var(--muted); }
 .step.blocked { background: var(--bad-soft); }
 @media (max-width: 560px) { .step { grid-template-columns: 1fr; gap: 4px; } }
+
+/* The compile phase reports no progress, so the bar slides instead of pretending to fill. */
+.progress.indeterminate span { width: 35%; animation: slide 1.3s ease-in-out infinite; }
+@keyframes slide { 0% { margin-left: -35%; } 100% { margin-left: 100%; } }
+@media (prefers-reduced-motion: reduce) { .progress.indeterminate span { animation: none; width: 100%; opacity: .5; } }

@@ -42,6 +42,11 @@ A static page, no build step, three kinds of number on it and they are kept visi
   Qwen2.5-0.5B was not usable. It does not word the answer - when it did, it replied to a
   question about cash with the total-portfolio figure, a true number on the wrong claim that a
   number check cannot catch - so every sentence is composed by code from computed figures.
+  The model is the f32 build: it warms up faster than f16 (about 25-28 s against 32-40 s) and runs
+  on GPUs without the `shader-f16` extension. That warm-up is WebGPU compiling the model's kernels,
+  paid on every page visit and not avoidable by picking a smaller Qwen, so it runs behind a visible
+  progress phase, starts by itself for returning visitors, and questions asked meanwhile are answered
+  by the keyword rules. Once warm a question takes about 2 s.
 - **The agent core, running on your input.** The intent router, the prompt guard and the
   metrics are pure functions with no network and no model, so the page imports the
   library's own compiled modules from `docs/lib` and runs them client-side.

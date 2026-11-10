@@ -668,48 +668,92 @@ const ASK_SAMPLES = {
        "AAPL ile MSFT korelasyonu", "Bana bir şiir yaz", "Bugün ne kadar kazandım?"],
 };
 let gpuOK = false;
+let cached = false;
+let compileStart = 0;
+let compileTimer = null;
 
 const MODEL_T = {
   en: {
-    off: `Keyword rules are routing questions (9 of 20 right in our test). Load a small on-device model to do better: ${LLM.MODEL_LABEL}, ~${LLM.MODEL_MB} MB once, runs in this browser, nothing is sent anywhere.`,
+    off: `Keyword rules are routing questions (9 of 20 right in our test). Load a small on-device model to do better: ${LLM.MODEL_LABEL}, about ${LLM.MODEL_MB} MB once, then about ${LLM.WARMUP_S} s of GPU set-up on each visit. It runs in this browser and nothing is sent anywhere.`,
+    cachedOff: `${LLM.MODEL_LABEL} is already on this device. It starts warming up when you reach this section (about ${LLM.WARMUP_S} s of GPU set-up); until then the keyword rules answer.`,
     nogpu: "This browser has no WebGPU, so the on-device model cannot run. Keyword rules are routing questions.",
-    btn: `Load model (~${LLM.MODEL_MB} MB)`, loading: "Loading…", on: "Model running on this device",
-    ready: `${LLM.MODEL_LABEL} is running on this device through WebGPU. It picks the intent (19 of 20 right in our test); the code computes every number. The first question takes about 40 s while the GPU warms up.`,
+    btn: `Load model (~${LLM.MODEL_MB} MB)`, btnCached: "Warm up model", loading: "Loading…", on: "Model running on this device",
+    download: "Downloading the model, this happens once…",
+    compile: (s) => `Compiling GPU kernels, about ${LLM.WARMUP_S} s once per visit (${s} s). Questions use the keyword rules meanwhile.`,
+    ready: `${LLM.MODEL_LABEL} is running on this device through WebGPU. It picks the tool (19 of 20 right in our test, about 2 s per question); the code computes every number.`,
     fail: "The model could not load. Keyword rules are still routing questions.",
   },
   tr: {
-    off: `Sorular anahtar kelime kurallarıyla yönlendiriliyor (testimizde 20'de 9 doğru). Daha iyisi için küçük bir cihaz içi model yükleyin: ${LLM.MODEL_LABEL}, bir kez ~${LLM.MODEL_MB} MB, bu tarayıcıda çalışır, hiçbir yere veri gönderilmez.`,
+    off: `Sorular anahtar kelime kurallarıyla yönlendiriliyor (testimizde 20'de 9 doğru). Daha iyisi için küçük bir cihaz içi model yükleyin: ${LLM.MODEL_LABEL}, bir kez ~${LLM.MODEL_MB} MB, her ziyarette yaklaşık ${LLM.WARMUP_S} sn GPU hazırlığı. Bu tarayıcıda çalışır, hiçbir yere veri gönderilmez.`,
+    cachedOff: `${LLM.MODEL_LABEL} zaten bu cihazda. Bu bölüme geldiğinizde ısınmaya başlar (yaklaşık ${LLM.WARMUP_S} sn GPU hazırlığı); o zamana kadar anahtar kelime kuralları cevaplar.`,
     nogpu: "Bu tarayıcıda WebGPU yok, cihaz içi model çalışamaz. Sorular anahtar kelime kurallarıyla yönlendiriliyor.",
-    btn: `Modeli yükle (~${LLM.MODEL_MB} MB)`, loading: "Yükleniyor…", on: "Model bu cihazda çalışıyor",
-    ready: `${LLM.MODEL_LABEL} bu cihazda WebGPU ile çalışıyor. Niyeti o seçer (testimizde 20'de 19 doğru); her rakamı kod hesaplar. İlk soru, GPU ısınırken yaklaşık 40 sn sürer.`,
+    btn: `Modeli yükle (~${LLM.MODEL_MB} MB)`, btnCached: "Modeli ısıt", loading: "Yükleniyor…", on: "Model bu cihazda çalışıyor",
+    download: "Model indiriliyor, bu bir kez olur…",
+    compile: (s) => `GPU çekirdekleri derleniyor, ziyaret başına bir kez yaklaşık ${LLM.WARMUP_S} sn (${s} sn). Bu sırada sorular anahtar kelime kurallarıyla cevaplanır.`,
+    ready: `${LLM.MODEL_LABEL} bu cihazda WebGPU ile çalışıyor. Aracı o seçer (testimizde 20'de 19 doğru, soru başına yaklaşık 2 sn); her rakamı kod hesaplar.`,
     fail: "Model yüklenemedi. Sorular hâlâ anahtar kelime kurallarıyla yönlendiriliyor.",
   },
 };
 
 function renderModelBar() {
   const m = MODEL_T[lang];
-  const btn = $("modelBtn");
-  if (LLM.isLoaded()) { $("modelLine").textContent = m.ready; btn.textContent = m.on; btn.disabled = true; return; }
-  if (!gpuOK) { $("modelLine").textContent = m.nogpu; btn.textContent = m.btn; btn.disabled = true; return; }
-  if (btn.dataset.busy === "1") return;
-  $("modelLine").textContent = m.off; btn.textContent = m.btn; btn.disabled = false;
-}
-
-async function enableModel() {
-  const btn = $("modelBtn"), bar = $("progress"), fill = $("progressFill");
-  btn.dataset.busy = "1"; btn.disabled = true; btn.textContent = MODEL_T[lang].loading; bar.hidden = false;
-  try {
-    await LLM.loadModel((r) => {
-      fill.style.width = Math.round(r.progress * 100) + "%";
-      $("modelLine").textContent = r.text.replace(/\s+/g, " ").slice(0, 110);
-    });
-  } catch {
-    btn.dataset.busy = "0"; bar.hidden = true; fill.style.width = "0";
-    $("modelLine").textContent = MODEL_T[lang].fail; btn.disabled = false; btn.textContent = MODEL_T[lang].btn;
+  const btn = $("modelBtn"), bar = $("progress");
+  if (LLM.isLoaded()) { bar.hidden = true; $("modelLine").textContent = m.ready; btn.textContent = m.on; btn.disabled = true; return; }
+  if (LLM.isBusy()) {
+    btn.disabled = true; btn.textContent = m.loading; bar.hidden = false;
+    if (compileStart) $("modelLine").textContent = m.compile(Math.round((Date.now() - compileStart) / 1000));
     return;
   }
-  btn.dataset.busy = "0"; bar.hidden = true;
+  bar.hidden = true;
+  if (!gpuOK) { $("modelLine").textContent = m.nogpu; btn.textContent = m.btn; btn.disabled = true; return; }
+  $("modelLine").textContent = cached ? m.cachedOff : m.off;
+  btn.textContent = cached ? m.btnCached : m.btn;
+  btn.disabled = false;
+}
+
+/** Start (or resume watching) the model load. Safe to call from the button and from auto warm-up. */
+async function startModel() {
+  if (LLM.isLoaded() || LLM.isBusy() || !gpuOK) return;
+  const bar = $("progress"), fill = $("progressFill");
+  bar.hidden = false; bar.classList.remove("indeterminate"); fill.style.width = "0";
+  const promise = LLM.loadModel((u) => {
+    if (u.phase === "download") {
+      fill.style.width = Math.round((u.progress ?? 0) * 100) + "%";
+      $("modelLine").textContent = MODEL_T[lang].download + " " + Math.round((u.progress ?? 0) * 100) + "%";
+    } else {
+      // Compilation reports no progress, so show elapsed time against the expected duration
+      // rather than a bar that pretends to know.
+      compileStart = Date.now();
+      bar.classList.add("indeterminate");
+      clearInterval(compileTimer);
+      compileTimer = setInterval(renderModelBar, 1000);
+    }
+    renderModelBar();
+  });
   renderModelBar();
+  try {
+    await promise;
+  } catch {
+    $("modelLine").textContent = MODEL_T[lang].fail;
+  } finally {
+    clearInterval(compileTimer); compileTimer = null; compileStart = 0;
+    bar.classList.remove("indeterminate"); fill.style.width = "100%";
+    if (LLM.isLoaded()) cached = true;
+    renderModelBar();
+  }
+}
+
+// Returning visitors already hold the weights, so only the ~30 s compile is left. Start it as
+// soon as the Ask section scrolls into view - typically well before they type - instead of
+// inside their first question. First-time visitors still opt in with the button: 850 MB is not
+// something to start without being asked.
+function watchForWarmup() {
+  if (!("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver((entries) => {
+    if (!entries.some((e) => e.isIntersecting)) return;
+    if (gpuOK && cached && !LLM.isBusy() && !LLM.isLoaded()) startModel();
+  }, { rootMargin: "300px 0px" });
+  io.observe($("ask"));
 }
 
 const fmt = () => ({ usd, signedUsd, pct, nf });
@@ -738,9 +782,9 @@ async function ask() {
   const out = $("askOut");
   const stepRow = (name, body, extra = "") => `<div class="step ${extra}"><div class="step-name">${esc(name)}</div><div>${body}</div></div>`;
   const N = lang === "tr"
-    ? { guard: "Güvenlik", router: "Yönlendirici", tool: "Araç", answer: "Cevap", clean: "temiz", blocked: "engellendi", model: "model", rules: "kurallar", ms: "ms",
+    ? { guard: "Güvenlik", router: "Yönlendirici", tool: "Araç", answer: "Cevap", clean: "temiz", blocked: "engellendi", model: "model", rules: "kurallar", rulesWarm: "kurallar (model ısınıyor)", ms: "ms",
         template: "cevap, aracın hesapladığı rakamlardan kodla oluşturuldu; model yalnızca aracı seçti" }
-    : { guard: "Guard", router: "Router", tool: "Tool", answer: "Answer", clean: "clean", blocked: "blocked", model: "model", rules: "rules", ms: "ms",
+    : { guard: "Guard", router: "Router", tool: "Tool", answer: "Answer", clean: "clean", blocked: "blocked", model: "model", rules: "rules", rulesWarm: "rules (model warming up)", ms: "ms",
         template: "answer composed by code from the tool's figures; the model only chose the tool" };
 
   out.innerHTML = `<div class="trace" data-q="${esc(clean)}">${stepRow(N.guard, "…")}</div>`;
@@ -757,6 +801,7 @@ async function ask() {
   if (LLM.isLoaded()) { intent = await LLM.classify(clean); if (mine !== askSeq) return; if (intent) via = "model"; }
   const rule = routeOffline(clean);
   if (!intent) intent = rule.intent;
+  if (via === "rules" && LLM.isBusy()) via = "rulesWarm";
   const ms = Math.round(performance.now() - t0);
 
   const result = runTool(intent, clean, model, fmt(), lang);
@@ -847,8 +892,8 @@ function init() {
 
   $("askGo").addEventListener("click", ask);
   $("askQ").addEventListener("keydown", (e) => { if (e.key === "Enter") ask(); });
-  $("modelBtn").addEventListener("click", enableModel);
-  LLM.webgpuAvailable().then((ok) => { gpuOK = ok; renderModelBar(); });
+  $("modelBtn").addEventListener("click", startModel);
+  Promise.all([LLM.webgpuAvailable(), LLM.isCached()]).then(([ok, c]) => { gpuOK = ok; cached = c; renderModelBar(); watchForWarmup(); });
   renderAskChips(); renderModelBar();
 
   setInterval(renderPhase, 30_000);
